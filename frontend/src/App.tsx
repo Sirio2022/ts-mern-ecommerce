@@ -1,5 +1,3 @@
-
-
 import { formatoMoneda } from './utils/Utils'
 import { sampleProducts } from './data'
 import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap'
