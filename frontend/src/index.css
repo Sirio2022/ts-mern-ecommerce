@@ -66,3 +66,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.product-image {
+  max-width: 400px;
+  width: 100%;
+}
