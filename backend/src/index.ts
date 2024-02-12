@@ -1,11 +1,9 @@
-import express, { Request, Response } from 'express';
-import { sampleProducts } from './data';
+import express from 'express';
+import productRoutes from './routes/productRouter';
 
 const app = express();
 
-app.get('/api/products', (req: Request, res: Response) => {
-    res.json(sampleProducts)
-});
+app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 5000;
 
