@@ -11,12 +11,12 @@ app.use(express.json());
 const whitelist = [process.env.FRONTEND_URL];
 const corsOptions = {
   origin: (origin: string | undefined, callback: any) => {
-    // Revisar si la petición viene de un servidor que está en whitelist
-    const existe = whitelist.some((dominio) => dominio === origin);
-    if (existe) {
+    // Review the access to the server
+    const exist = whitelist.some((domain) => domain === origin);
+    if (exist) {
       callback(null, true);
     } else {
-      callback(new Error('No permitido por CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
 };
