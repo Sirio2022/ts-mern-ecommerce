@@ -13,7 +13,7 @@ export const sampleProducts: Product[] = [
     numReviews: 12,
   },
   {
-    name: 'Ibanez RGDR4327 Prestige',
+    name: 'Ibanez RGDR4327 Prestige 7-String Electric Guitar with Case',
     slug: 'ibanez-rgdr4327-rgd-prestige',
     image: '../images/p2.jpg',
     brand: 'Ibanez',
