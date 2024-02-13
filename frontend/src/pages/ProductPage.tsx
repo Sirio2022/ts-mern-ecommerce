@@ -26,14 +26,14 @@ export default function ProductPage() {
         ) : (
             <>
                 <Row>
-                    <Col md={6}>
+                    <Col md={5}>
                         <img
                             src={product.image}
                             alt={product.name}
                             className="img-fluid"
                         />
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                         <ListGroup className="list-group list-group-flush">
                             <ListGroup.Item>
                                 <Helmet>
