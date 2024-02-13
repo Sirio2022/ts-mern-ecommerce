@@ -16,6 +16,10 @@
   color: #ffc000;
 }
 
+.nav-bar-links {
+  text-decoration: none;
+}
+
 .card-link {
   color: black;
   text-decoration: none;

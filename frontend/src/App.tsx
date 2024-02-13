@@ -1,5 +1,5 @@
 import { Container, Nav, Navbar } from 'react-bootstrap'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 function App() {
 
@@ -10,12 +10,18 @@ function App() {
         <Navbar bg='dark' variant='dark' expand='lg' >
 
           <Container>
-            <Navbar.Brand href='/'>Music Store</Navbar.Brand>
+            <Link to='/' className='nav-bar-links'>
+              <Navbar.Brand>Music Store</Navbar.Brand>
+            </Link>
           </Container>
 
           <Nav>
-            <Nav.Link href='/cart'>Cart</Nav.Link>
-            <Nav.Link href='/signin'>Sign In</Nav.Link>
+            <Link to='/cart' className='nav-bar-links'>
+              <Nav.Link>Cart</Nav.Link>
+            </Link>
+            <Link to='/signin' className='nav-bar-links'>
+              <Nav.Link>Sign In</Nav.Link>
+            </Link>
           </Nav>
 
         </Navbar>
