@@ -30,7 +30,7 @@ export const sampleProducts: Product[] = [
     image: '../images/p3.jpg',
     brand: 'Caparison',
     price: 1999.99,
-    countInStock: 11,
+    countInStock: 0,
     description: 'Caparison Dellinger Bass Guitar with Case',
     rating: 4.8,
     numReviews: 12,
