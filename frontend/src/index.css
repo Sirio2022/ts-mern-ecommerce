@@ -11,3 +11,26 @@
   max-width: 400px;
   width: 100%;
 }
+
+.rating span {
+  color: #ffc000;
+}
+
+.card-link {
+  color: black;
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 3.2em;
+  /* 3.2em = 51.2px */
+  margin-bottom: 1em;
+  /* 1em = 16px */
+}
+
+.card-link:hover {
+  color: #ff6600;
+  text-decoration: none;
+}
