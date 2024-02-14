@@ -21,7 +21,7 @@ function ProductItem({ product }: { product: Product }) {
                     to={`/product/${product.slug}`}
                     className="card-link"
                 >
-                    <Card.Title className={mode === 'dark' ? 'text-white' : undefined}>
+                    <Card.Title className={mode === 'dark' ? 'card-link-black' : undefined}>
                         {product.name}
                     </Card.Title>
                 </Link>
