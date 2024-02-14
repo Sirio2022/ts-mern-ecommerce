@@ -16,8 +16,11 @@ type Action = { type: 'TOGGLE_MODE' };
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
-        case 'TOGGLE_MODE':
-            return { mode: state.mode === 'dark' ? 'light' : 'dark' }
+        case 'TOGGLE_MODE': {
+            const newMode = state.mode === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('mode', newMode);
+            return { ...state, mode: newMode };
+        }
         default:
             return state;
     }
