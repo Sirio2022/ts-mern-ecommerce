@@ -1,13 +1,27 @@
-import { Container, Nav, Navbar } from 'react-bootstrap'
+import { useContext, useEffect } from 'react'
+import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import { Link, Outlet } from 'react-router-dom'
+import { AppStateContext } from './Store'
 
 function App() {
 
+  const { state: { mode }, dispatch } = useContext(AppStateContext)
+
+  useEffect(() => {
+    document.body.setAttribute('data-bs-theme', mode)
+  }, [mode])
+
+  const toggleMode = () => {
+    dispatch({ type: 'TOGGLE_MODE' })
+  }
 
   return (
+
+
+
     <div className='d-flex flex-column vh-100'>
       <header>
-        <Navbar bg='dark' variant='dark' expand='lg' >
+        <Navbar expand='lg'>
 
           <Container>
             <Link to='/' className='nav-bar-links'>
@@ -16,6 +30,13 @@ function App() {
           </Container>
 
           <Nav>
+            <Button
+              variant={mode}
+              onClick={toggleMode}
+              className='m-auto me-2'
+            >
+              <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
+            </Button>
             <Link to='/cart' className='nav-bar-links'>
               <Nav.Link>Cart</Nav.Link>
             </Link>

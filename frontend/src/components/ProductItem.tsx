@@ -3,9 +3,13 @@ import { Product } from "../types/Products";
 import { Link } from "react-router-dom";
 import { formatoMoneda } from "../utils/Utils";
 import Rating from "./Rating";
+import { useContext } from "react";
+import { AppStateContext } from "../Store";
 
 function ProductItem({ product }: { product: Product }) {
-    
+
+    const { state: { mode } } = useContext(AppStateContext)
+
     return (
         <Card>
             <Link to={`/product/${product.slug}`}>
@@ -17,10 +21,9 @@ function ProductItem({ product }: { product: Product }) {
                     to={`/product/${product.slug}`}
                     className="card-link"
                 >
-                    <Card.Title>
+                    <Card.Title className={mode === 'dark' ? 'text-white' : undefined}>
                         {product.name}
                     </Card.Title>
-
                 </Link>
 
                 <Rating rating={product.rating} numReviews={product.numReviews} />
@@ -29,7 +32,7 @@ function ProductItem({ product }: { product: Product }) {
                     {formatoMoneda(product.price)}
                 </Card.Text>
                 {product.countInStock <= 0 ? (
-                    <Button variant="light" disabled>
+                    <Button variant="danger" disabled>
                         Out of Stock
                     </Button>
                 ) : (
