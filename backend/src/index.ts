@@ -2,11 +2,21 @@ import express from 'express';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRouter';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 const app = express();
 dotenv.config();
 
 app.use(express.json());
+
+const dataBaseConnection = process.env.MONGO_URI;
+mongoose.set('strictQuery', true);
+
+if (dataBaseConnection) {
+  mongoose
+    .connect(dataBaseConnection)
+    .then(() => console.log('MongoDB connected successfully'));
+}
 
 const whitelist = [process.env.FRONTEND_URL];
 const corsOptions = {
