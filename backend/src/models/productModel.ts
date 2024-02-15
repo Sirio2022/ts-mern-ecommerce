@@ -5,26 +5,34 @@ export class Product {
   public _id!: string;
 
   @prop({ required: true })
-  name!: string;
+  public name!: string;
 
   @prop({ required: true, unique: true })
-  slug!: string;
+  public slug!: string;
 
   @prop({ required: true })
-  image!: string;
+  public image!: string;
 
   @prop({ required: true })
-  description!: string;
+  public brand!: string;
 
   @prop({ required: true })
-  price!: number;
+  public category!: string;
 
   @prop({ required: true })
-  countInStock!: number;
+  public description!: string;
 
-  @prop({ required: true })
-  rating!: number;
+  @prop({ required: true, default: 0 })
+  public price!: number;
 
-  @prop({ required: true })
-  numReviews!: number;
+  @prop({ required: true, default: 0 })
+  public countInStock!: number;
+
+  @prop({ required: true, default: 0 })
+  public rating!: number;
+
+  @prop({ required: true, default: 0 })
+  public numReviews!: number;
 }
+
+export const ProductModel = getModelForClass(Product)

@@ -6,6 +6,7 @@ export type Product = {
   price: number;
   countInStock: number;
   description: string;
+  category: string;
   rating: number;
   numReviews: number;
 };

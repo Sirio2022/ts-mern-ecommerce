@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRouter';
+import seedRoutes from './routes/seedRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
@@ -33,6 +34,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Routes
+app.use('/api/seed', seedRoutes);
 app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 5005;
