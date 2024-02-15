@@ -1,4 +1,5 @@
 export type Product = {
+  _id: string;
   name: string;
   slug: string;
   image: string;
@@ -6,6 +7,7 @@ export type Product = {
   price: number;
   countInStock: number;
   description: string;
+  category: string;
   rating: number;
   numReviews: number;
 };
