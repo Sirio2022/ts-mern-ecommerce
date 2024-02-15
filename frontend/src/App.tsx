@@ -27,32 +27,36 @@ function App() {
             </Link>
           </Container>
 
-          <Nav className='w-25'>
+          <Nav>
 
-            <Button
-              variant={mode}
-              onClick={toggleMode}
-              className='m-auto me-2'
-            >
-              <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
-            </Button>
+            <div className='nav-bar-container'>
+              <div>
+                <Button
+                  variant={mode}
+                  onClick={toggleMode}
+                  className='m-auto me-2'
+                >
+                  <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
+                </Button>
+              </div>
 
+              <div>
+                <Link to='/cart' className='nav-bar-links'>
+                  Cart{' '}
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg='success'>
+                      {cart.cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                    </Badge>
+                  )}
+                </Link>
+              </div>
 
-            <Link to='/cart' className='nav-bar-links'>
-              <Nav.Link>
-                Cart{' '}
-                {cart.cartItems.length > 0 && (
-                  <Badge pill bg='success'>
-                    {cart.cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                  </Badge>
-                )}
-              </Nav.Link>
-            </Link>
-
-
-            <Link to='/signin' className='nav-bar-links'>
-              <Nav.Link>Sign In</Nav.Link>
-            </Link>
+              <div>
+                <Link to='/signin' className='nav-bar-links'>
+                  Sign In
+                </Link>
+              </div>
+            </div>
 
           </Nav>
 
