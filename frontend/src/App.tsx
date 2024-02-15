@@ -29,20 +29,26 @@ function App() {
             </Link>
           </Container>
 
-          <Nav>
-            <Button
-              variant={mode}
-              onClick={toggleMode}
-              className='m-auto me-2'
-            >
-              <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
-            </Button>
-            <Link to='/cart' className='nav-bar-links'>
-              <Nav.Link>Cart</Nav.Link>
-            </Link>
-            <Link to='/signin' className='nav-bar-links'>
-              <Nav.Link>Sign In</Nav.Link>
-            </Link>
+          <Nav className='w-25'>
+            <div>
+              <Button
+                variant={mode}
+                onClick={toggleMode}
+                className='m-auto me-2'
+              >
+                <i className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}></i>
+              </Button>
+            </div>
+            <div>
+              <Link to='/cart' className='nav-bar-links'>
+                <Nav.Link>Cart</Nav.Link>
+              </Link>
+            </div>
+            <div>
+              <Link to='/signin' className='nav-bar-links'>
+                <Nav.Link>Sign In</Nav.Link>
+              </Link>
+            </div>
           </Nav>
 
         </Navbar>
