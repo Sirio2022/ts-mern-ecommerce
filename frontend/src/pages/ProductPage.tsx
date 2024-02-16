@@ -1,12 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import { useGetProductDetailsBySlugQuery } from "../hooks/productHooks";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { ApiError } from "../types/ApiError";
-import { formatoMoneda, getError } from "../utils/Utils";
+import { formatoMoneda, getError, convertProductToCartItem } from "../utils/Utils";
 import { Badge, Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import Rating from "../components/Rating";
+import { useContext } from "react";
+import { AppStateContext } from "../Store";
+import { toast } from "react-toastify";
+
 
 
 export default function ProductPage() {
@@ -14,7 +18,27 @@ export default function ProductPage() {
     const params = useParams();
     const { slug } = params;
 
+    const navigate = useNavigate();
+
     const { data: product, isLoading, error } = useGetProductDetailsBySlugQuery(slug!);
+
+    const { state: { cart }, dispatch } = useContext(AppStateContext)
+
+    const addToCartHandler = () => {
+        const existItem = cart.cartItems.find((x) => x._id === product!._id);
+        const qty = existItem ? existItem.qty + 1 : 1;
+        if (product!.countInStock < qty) {
+            toast.warn('Sorry, this product is out of stock');
+            return;
+        }
+        dispatch({
+            type: 'ADD_TO_CART',
+            payload: { ...convertProductToCartItem(product!), qty },
+        });
+        toast.success('Item added to cart');
+        navigate('/cart');
+    }
+
 
     return (
         isLoading ? (
@@ -88,7 +112,11 @@ export default function ProductPage() {
                                     {product.countInStock > 0 && (
                                         <ListGroup.Item>
                                             <div className="d-grid">
-                                                <Button variant="primary">
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={addToCartHandler}
+
+                                                >
                                                     Add to cart
                                                 </Button>
                                             </div>

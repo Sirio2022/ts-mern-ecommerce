@@ -26,10 +26,20 @@ const initialState: AppState = {
             localStorage.getItem('paymentMethod')
                 ? localStorage.getItem('paymentMethod')!
                 : 'PayPal',
-        itemsPrice: 0,
-        shippingPrice: 0,
-        taxPrice: 0,
-        totalPrice: 0,
+        itemsPrice: localStorage.getItem('itemsPrice')
+            ? JSON.parse(
+                localStorage.getItem('itemsPrice')!)
+            : 0,
+        shippingPrice: localStorage.getItem('shippingPrice') ? JSON.parse(
+            localStorage.getItem('shippingPrice')!)
+            : 0,
+        taxPrice: localStorage.getItem('taxPrice') ? JSON.parse(
+            localStorage.getItem('taxPrice')!)
+            : 0,
+
+        totalPrice: localStorage.getItem('totalPrice') ? JSON.parse(
+            localStorage.getItem('totalPrice')!)
+            : 0,
         isPaid: false,
         paidAt: '',
         isDelivered: false,
@@ -60,12 +70,16 @@ const reducer = (state: AppState, action: Action): AppState => {
                     item._id === existItem._id ? newItem : item
                 )
                 : [...state.cart.cartItems, newItem];
+            localStorage.setItem('cartItems', JSON.stringify(cartItems))
             const itemsPrice = cartItems
                 .reduce((acc, item) => acc + item.price * item.qty, 0);
-            const shippingPrice = itemsPrice > 100 ? 0 : 10;
+            localStorage.setItem('itemsPrice', JSON.stringify(itemsPrice));
+            const shippingPrice = itemsPrice > 100 ? 10 : 0;
+            localStorage.setItem('shippingPrice', JSON.stringify(shippingPrice));
             const taxPrice = 0.15 * itemsPrice;
+            localStorage.setItem('taxPrice', JSON.stringify(taxPrice));
             const totalPrice = itemsPrice + shippingPrice + taxPrice;
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
             return {
                 ...state,
                 cart: {
