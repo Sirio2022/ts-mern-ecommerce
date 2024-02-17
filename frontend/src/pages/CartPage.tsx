@@ -30,6 +30,13 @@ export default function CartPage() {
         })
     }
 
+    const removeFromCartHandler = (item: CartItem ) => {
+        dispatch({
+            type: 'REMOVE_FROM_CART',
+            payload: item,
+        })
+    }
+
     return (
         <div>
             <Helmet>
@@ -104,7 +111,10 @@ export default function CartPage() {
                                         </Col>
 
                                         <Col md={1}>
-                                            <Button variant="secondary">
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => removeFromCartHandler(item)}
+                                            >
                                                 <i className="fas fa-trash"></i>
                                             </Button>
                                         </Col>

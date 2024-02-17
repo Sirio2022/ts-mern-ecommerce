@@ -43,7 +43,8 @@ const initialState: AppState = {
 
 type Action =
     | { type: 'TOGGLE_MODE' }
-    | { type: 'ADD_TO_CART', payload: CartItem };
+    | { type: 'ADD_TO_CART', payload: CartItem }
+    | { type: 'REMOVE_FROM_CART', payload: CartItem };
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -91,6 +92,28 @@ const reducer = (state: AppState, action: Action): AppState => {
                         totalPrice,
                     },
                 },
+            };
+        }
+        case 'REMOVE_FROM_CART': {
+            const cartItems = state.cart.cartItems.filter(
+                (item: CartItem) => item._id !== action.payload._id
+            );
+            const cartPrices = state.cart.cartPrices;
+            (cartPrices.itemsPrice = cartItems.reduce(
+                (acc, item) => acc + item.price * item.qty,
+                0
+            )),
+                (cartPrices.shippingPrice = cartPrices.itemsPrice > 100 ? 10 : 0),
+                (cartPrices.taxPrice = 0.15 * cartPrices.itemsPrice),
+                (cartPrices.totalPrice =
+                    cartPrices.itemsPrice +
+                    cartPrices.shippingPrice +
+                    cartPrices.taxPrice);
+            localStorage.setItem('cartPrices', JSON.stringify(cartPrices));
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            return {
+                ...state,
+                cart: { ...state.cart, cartItems },
             };
         }
         default:
