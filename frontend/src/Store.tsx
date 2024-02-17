@@ -17,29 +17,21 @@ const initialState: AppState = {
             ? JSON.parse(
                 localStorage.getItem('cartItems')!)
             : [],
-        shippingAddress:
-            localStorage.getItem('shippingAddress')
-                ? JSON.parse(
-                    localStorage.getItem('shippingAddress')!)
-                : {},
-        paymentMethod:
-            localStorage.getItem('paymentMethod')
-                ? localStorage.getItem('paymentMethod')!
-                : 'PayPal',
-        itemsPrice: localStorage.getItem('itemsPrice')
+        shippingAddress: localStorage.getItem('shippingAddress')
             ? JSON.parse(
-                localStorage.getItem('itemsPrice')!)
-            : 0,
-        shippingPrice: localStorage.getItem('shippingPrice') ? JSON.parse(
-            localStorage.getItem('shippingPrice')!)
-            : 0,
-        taxPrice: localStorage.getItem('taxPrice') ? JSON.parse(
-            localStorage.getItem('taxPrice')!)
-            : 0,
-
-        totalPrice: localStorage.getItem('totalPrice') ? JSON.parse(
-            localStorage.getItem('totalPrice')!)
-            : 0,
+                localStorage.getItem('shippingAddress')!)
+            : {},
+        paymentMethod: localStorage.getItem('paymentMethod')
+            ? localStorage.getItem('paymentMethod')!
+            : 'PayPal',
+        cartPrices: localStorage.getItem('cartPrices') ? JSON.parse(
+            localStorage.getItem('cartPrices')!)
+            : {
+                itemsPrice: 0,
+                shippingPrice: 0,
+                taxPrice: 0,
+                totalPrice: 0,
+            },
         isPaid: false,
         paidAt: '',
         isDelivered: false,
@@ -71,24 +63,33 @@ const reducer = (state: AppState, action: Action): AppState => {
                 )
                 : [...state.cart.cartItems, newItem];
             localStorage.setItem('cartItems', JSON.stringify(cartItems))
+
             const itemsPrice = cartItems
                 .reduce((acc, item) => acc + item.price * item.qty, 0);
-            localStorage.setItem('itemsPrice', JSON.stringify(itemsPrice));
+
             const shippingPrice = itemsPrice > 100 ? 10 : 0;
-            localStorage.setItem('shippingPrice', JSON.stringify(shippingPrice));
+
             const taxPrice = 0.15 * itemsPrice;
-            localStorage.setItem('taxPrice', JSON.stringify(taxPrice));
+
             const totalPrice = itemsPrice + shippingPrice + taxPrice;
-            localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
+
+            localStorage.setItem('cartPrices', JSON.stringify({
+                itemsPrice,
+                shippingPrice,
+                taxPrice,
+                totalPrice,
+            }))
             return {
                 ...state,
                 cart: {
                     ...state.cart,
                     cartItems,
-                    itemsPrice,
-                    shippingPrice,
-                    taxPrice,
-                    totalPrice,
+                    cartPrices: {
+                        itemsPrice,
+                        shippingPrice,
+                        taxPrice,
+                        totalPrice,
+                    },
                 },
             };
         }

@@ -16,10 +16,8 @@ export default function CartPage() {
 
     const { state: { mode, cart: {
         cartItems,
-        itemsPrice,
-        shippingPrice,
-        taxPrice,
-        totalPrice, } }, dispatch } = useContext(AppStateContext)
+        cartPrices: { itemsPrice, shippingPrice, taxPrice, totalPrice }
+    } }, dispatch } = useContext(AppStateContext)
 
     const updateCartHandler = (item: CartItem, qty: number) => {
         if (item.countInStock < qty) {
@@ -30,7 +28,6 @@ export default function CartPage() {
             type: 'ADD_TO_CART',
             payload: { ...item, qty },
         })
-
     }
 
     return (
@@ -59,7 +56,7 @@ export default function CartPage() {
                         </MessageBox>
                     ) : (
                         <ListGroup variant='flush'>
-                            {cartItems.map((item: CartItem) => (
+                            {Array.isArray(cartItems) && cartItems.map((item: CartItem) => (
                                 <ListGroup.Item key={item._id}>
 
                                     <Row className="align-items-center my-5">
@@ -124,7 +121,7 @@ export default function CartPage() {
                             <ListGroup variant="flush">
                                 <ListGroup.Item className="my-container">
 
-                                    <span>Subtotal ({(cartItems.reduce((a, c) => a + c.qty, 0))} Items)</span>
+                                    <span>Subtotal ({(Array.isArray(cartItems) && cartItems.reduce((a, c) => a + c.qty, 0))} Items)</span>
 
 
                                     {formatoMoneda(itemsPrice)}
