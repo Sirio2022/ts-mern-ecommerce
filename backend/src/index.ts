@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRouter';
+import userRoutes from './routes/userRouter';
 import seedRoutes from './routes/seedRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -9,6 +10,7 @@ const app = express();
 dotenv.config();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const dataBaseConnection = process.env.MONGO_URI;
 mongoose.set('strictQuery', true);
@@ -32,11 +34,14 @@ const corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
+// Enable CORS
+//app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/seed', seedRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/users/signin', userRoutes)
+
 
 const PORT = process.env.PORT || 5005;
 
