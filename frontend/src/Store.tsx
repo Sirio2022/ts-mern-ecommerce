@@ -1,12 +1,19 @@
 import React from 'react';
 import { Cart, CartItem } from './types/Cart';
+import { UserInfo } from './types/UserInfo';
 
 type AppState = {
     mode: string;
     cart: Cart;
+    userInfo?: UserInfo;
 };
 
 const initialState: AppState = {
+
+    userInfo: localStorage.getItem('userInfo')
+        ? JSON.parse(localStorage.getItem('userInfo')!)
+        : undefined,
+
     mode: localStorage.getItem('mode')
         ? localStorage.getItem('mode')!
         : window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -44,7 +51,9 @@ const initialState: AppState = {
 type Action =
     | { type: 'TOGGLE_MODE' }
     | { type: 'ADD_TO_CART', payload: CartItem }
-    | { type: 'REMOVE_FROM_CART', payload: CartItem };
+    | { type: 'REMOVE_FROM_CART', payload: CartItem }
+    | { type: 'USER_SIGNIN', payload: UserInfo }
+    | { type: 'USER_SIGNOUT' }
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -114,6 +123,47 @@ const reducer = (state: AppState, action: Action): AppState => {
             return {
                 ...state,
                 cart: { ...state.cart, cartItems },
+            };
+        }
+        case 'USER_SIGNIN': {
+            localStorage.setItem('userInfo', JSON.stringify(action.payload));
+            return { ...state, userInfo: action.payload };
+        }
+        case 'USER_SIGNOUT': {
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('cartItems');
+            localStorage.removeItem('cartPrices');
+            localStorage.removeItem('shippingAddress');
+            localStorage.removeItem('paymentMethod');
+            return {
+                ...state,
+                mode:
+                    window.matchMedia('(prefers-color-scheme: dark)').matches
+                        ? 'dark'
+                        : 'light',
+                cart: {
+                    cartItems: [],
+                    cartPrices: {
+                        itemsPrice: 0,
+                        shippingPrice: 0,
+                        taxPrice: 0,
+                        totalPrice: 0,
+                    },
+                    shippingAddress: {
+                        fullName: '',
+                        address: '',
+                        city: '',
+                        postalCode: '',
+                        country: '',
+                    },
+                    paymentMethod: 'PayPal',
+                    isPaid: false,
+                    paidAt: '',
+                    isDelivered: false,
+                    deliveredAt: '',
+                    createdAt: '',
+                    updatedAt: '',
+                },
             };
         }
         default:

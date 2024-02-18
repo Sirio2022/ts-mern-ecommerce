@@ -35,13 +35,12 @@ const corsOptions = {
 };
 
 // Enable CORS
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/seed', seedRoutes);
 app.use('/api/products', productRoutes);
-app.use('/api/users/signin', userRoutes)
-
+app.use('/api/users/signin', userRoutes);
 
 const PORT = process.env.PORT || 5005;
 

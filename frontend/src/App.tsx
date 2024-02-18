@@ -1,14 +1,15 @@
 import { useContext, useEffect } from 'react'
-import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap'
+import { Badge, Button, Container, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link, Outlet } from 'react-router-dom'
 import { AppStateContext } from './Store'
 
+
 function App() {
 
-  const { state: { mode, cart }, dispatch } = useContext(AppStateContext)
+  const { state: { mode, cart, userInfo }, dispatch } = useContext(AppStateContext)
 
   useEffect(() => {
     document.body.setAttribute('data-bs-theme', mode)
@@ -16,6 +17,11 @@ function App() {
 
   const toggleMode = () => {
     dispatch({ type: 'TOGGLE_MODE' })
+  }
+
+  const signoutHandler = () => {
+    dispatch({ type: 'USER_SIGNOUT' })
+    window.location.href = '/signin'
   }
 
   return (
@@ -57,9 +63,24 @@ function App() {
               </div>
 
               <div>
-                <Link to='/signin' className='nav-bar-links'>
-                  Sign In
-                </Link>
+                {
+                  userInfo ? (
+                    <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
+                      <Link
+                        to='#/signout'
+                        className='dropdown-item'
+                        onClick={signoutHandler}
+                      >
+                        Sign Out
+                      </Link>
+
+                    </NavDropdown>
+                  ) : (
+                    <Link to='/signin' className='nav-bar-links'>
+                      Sign In
+                    </Link>
+                  )
+                }
               </div>
             </div>
 
