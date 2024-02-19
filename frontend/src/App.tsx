@@ -53,6 +53,7 @@ function App() {
 
               <div>
                 <Link to='/cart' className='nav-bar-links'>
+                  <i className="fa-solid fa-cart-shopping"></i>{' '}
                   Cart{' '}
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg='success'>
