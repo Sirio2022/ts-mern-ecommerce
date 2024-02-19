@@ -53,7 +53,7 @@ export default function RegisterPage() {
                 const data = await register({ name, email, password });
                 dispatch({ type: 'USER_SIGNIN', payload: data });
                 navigate(redirect);
-                toast.success('Welcome')
+                toast.success('Welcome to the store!')
             } catch (error) {
                 toast.error(getError(error as ApiError))
             }
