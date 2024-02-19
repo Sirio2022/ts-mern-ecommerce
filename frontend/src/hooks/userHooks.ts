@@ -14,3 +14,23 @@ export const useSignInMutation = () =>
       (await apiClient.post<UserInfo>('api/users/signin', { email, password }))
         .data,
   });
+
+export const useRegisterMutation = () =>
+  useMutation({
+    mutationFn: async ({
+      name,
+      email,
+      password,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+    }) =>
+      (
+        await apiClient.post<UserInfo>('api/users/register', {
+          name,
+          email,
+          password,
+        })
+      ).data,
+  });

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
+import registerRoutes from './routes/registerRouter';
 import seedRoutes from './routes/seedRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -41,6 +42,7 @@ app.use(cors(corsOptions));
 app.use('/api/seed', seedRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users/signin', userRoutes);
+app.use('/api/users/register', registerRoutes);
 
 const PORT = process.env.PORT || 5005;
 

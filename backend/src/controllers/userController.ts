@@ -6,6 +6,14 @@ import { generateToken } from '../utils';
 
 const getUser = expressAsyncHandler(async (req: Request, res: Response) => {
   const user = await UserModel.findOne({ email: req.body.email });
+
+  if (!user) {
+    res
+      .status(401)
+      .json({ message: 'User not found. Please create an account.' });
+    return;
+  }
+
   if (user) {
     if (bcrypt.compareSync(req.body.password, user.password)) {
       res.json({

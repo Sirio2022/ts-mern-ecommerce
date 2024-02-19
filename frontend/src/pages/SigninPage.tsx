@@ -29,22 +29,34 @@ export default function SigninPage() {
 
     const { mutateAsync: signin, isPending } = useSignInMutation();
 
-    const submitHandler = async (e: React.SyntheticEvent) => {
-        e.preventDefault();
-        try {
-            const data = await signin({ email, password });
-            dispatch({ type: 'USER_SIGNIN', payload: data });
-            navigate(redirect);
-        } catch (error) {
-            toast.error(getError(error as ApiError))
-        }
-    }
-
     useEffect(() => {
         if (userInfo) {
             navigate(redirect);
         }
     }, [userInfo, navigate, redirect]);
+
+    const submitHandler = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+
+        if (!email || !password) {
+            toast.error('Please fill in all fields')
+            return;
+        }
+
+        if (password.length < 6) {
+            toast.error('Password must be at least 6 characters long')
+            return;
+        }
+
+        try {
+            const data = await signin({ email, password });
+            dispatch({ type: 'USER_SIGNIN', payload: data });
+            navigate(redirect);
+            toast.success('Welcome back')
+        } catch (error) {
+            toast.error(getError(error as ApiError))
+        }
+    }
 
     return (
         <Container className="small-container">
