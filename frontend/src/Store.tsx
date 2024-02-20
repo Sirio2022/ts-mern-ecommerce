@@ -55,6 +55,7 @@ type Action =
     | { type: 'USER_SIGNIN', payload: UserInfo }
     | { type: 'USER_SIGNOUT' }
     | { type: 'SAVE_SHIPPING_ADDRESS', payload: ShippingAddress }
+    | { type: 'SAVE_PAYMENT_METHOD', payload: string };
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -172,6 +173,13 @@ const reducer = (state: AppState, action: Action): AppState => {
             return {
                 ...state,
                 cart: { ...state.cart, shippingAddress: action.payload },
+            };
+        }
+        case 'SAVE_PAYMENT_METHOD': {
+            localStorage.setItem('paymentMethod', action.payload);
+            return {
+                ...state,
+                cart: { ...state.cart, paymentMethod: action.payload },
             };
         }
         default:
