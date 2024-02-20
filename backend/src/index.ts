@@ -3,9 +3,11 @@ import dotenv from 'dotenv';
 import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
 import registerRoutes from './routes/registerRouter';
+import orderRoutes from './routes/orderRouter';
 import seedRoutes from './routes/seedRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import { isAuth } from './utils';
 
 const app = express();
 dotenv.config();
@@ -36,13 +38,14 @@ const corsOptions = {
 };
 
 // Enable CORS
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 // Routes
 app.use('/api/seed', seedRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users/signin', userRoutes);
 app.use('/api/users/register', registerRoutes);
+app.use('/api/orders', isAuth, orderRoutes);
 
 const PORT = process.env.PORT || 5005;
 
