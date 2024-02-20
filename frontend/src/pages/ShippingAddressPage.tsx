@@ -35,8 +35,6 @@ export default function ShippingAddressPage() {
         navigate('/payment');
     })
 
-
-
     return (
         <div>
             <Helmet>
