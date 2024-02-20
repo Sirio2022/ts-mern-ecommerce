@@ -25,9 +25,7 @@ export default function RegisterPage() {
     const [password, serPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const { state, dispatch } = useContext(AppStateContext)
-
-    const { userInfo } = state;
+    const { state: { userInfo }, dispatch } = useContext(AppStateContext)
 
     const { mutateAsync: register, isPending } = useRegisterMutation();
 

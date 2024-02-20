@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cart, CartItem } from './types/Cart';
+import { Cart, CartItem, ShippingAddress } from './types/Cart';
 import { UserInfo } from './types/UserInfo';
 
 type AppState = {
@@ -54,6 +54,7 @@ type Action =
     | { type: 'REMOVE_FROM_CART', payload: CartItem }
     | { type: 'USER_SIGNIN', payload: UserInfo }
     | { type: 'USER_SIGNOUT' }
+    | { type: 'SAVE_SHIPPING_ADDRESS', payload: ShippingAddress }
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -164,6 +165,13 @@ const reducer = (state: AppState, action: Action): AppState => {
                     createdAt: '',
                     updatedAt: '',
                 },
+            };
+        }
+        case 'SAVE_SHIPPING_ADDRESS': {
+            localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
+            return {
+                ...state,
+                cart: { ...state.cart, shippingAddress: action.payload },
             };
         }
         default:

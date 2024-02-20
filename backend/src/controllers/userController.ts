@@ -26,7 +26,7 @@ const getUser = expressAsyncHandler(async (req: Request, res: Response) => {
       return;
     }
   }
-  res.status(401).json({ mesaage: 'Invalid Email or Password' });
+  res.status(401).json({ message: 'Invalid Email or Password' });
 });
 
 export { getUser };
