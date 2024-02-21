@@ -109,13 +109,13 @@ export default function PlaceOrderPage() {
                                 {cart.cartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className="aling-items-center">
-                                            <Col md={8} className="px-2 d-flex justify-content-between">
+                                            <Col md={8} className="px-1 d-flex justify-content-start">
                                                 <img
                                                     src={item.image}
                                                     alt={item.name}
                                                     className="img-fluid rounded thumbnail"
                                                 />
-                                                <Link to={`/product/${item.slug}`} className="cart-link m-auto">{item.name}</Link>
+                                                <Link to={`/product/${item.slug}`} className="cart-link">{item.name}</Link>
                                             </Col>
 
                                             <Col md={2} className="text-center m-auto">

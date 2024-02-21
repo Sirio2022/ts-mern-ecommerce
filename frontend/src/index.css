@@ -123,4 +123,7 @@ img.thumbnail {
   color: #6f98f1;
   text-decoration: none;
   font-size: smaller;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
 }
