@@ -3,7 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import { ProductModel } from '../models/productModel';
 
 const getProducts = expressAsyncHandler(async (req: Request, res: Response) => {
-  const products = await ProductModel.find();
+  const products = await ProductModel.find().sort({ createdAt: 1 });
   res.json(products);
 });
 

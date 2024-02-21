@@ -45,9 +45,6 @@ export default function PlaceOrderPage() {
                     totalPrice: cart.cartPrices.totalPrice,
                 }
             });
-            console.log(response);
-            
-
             dispatch({ type: 'CART_CLEAR' });
             navigate(`/order/${response.order._id}`);
         } catch (error) {

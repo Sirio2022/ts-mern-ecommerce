@@ -55,7 +55,8 @@ type Action =
     | { type: 'USER_SIGNIN', payload: UserInfo }
     | { type: 'USER_SIGNOUT' }
     | { type: 'SAVE_SHIPPING_ADDRESS', payload: ShippingAddress }
-    | { type: 'SAVE_PAYMENT_METHOD', payload: string };
+    | { type: 'SAVE_PAYMENT_METHOD', payload: string }
+    | { type: 'CART_CLEAR' };
 
 const reducer = (state: AppState, action: Action): AppState => {
     switch (action.type) {
@@ -180,6 +181,38 @@ const reducer = (state: AppState, action: Action): AppState => {
             return {
                 ...state,
                 cart: { ...state.cart, paymentMethod: action.payload },
+            };
+        }
+        case 'CART_CLEAR': {
+            localStorage.removeItem('cartItems');
+            localStorage.removeItem('cartPrices');
+            localStorage.removeItem('shippingAddress');
+            localStorage.removeItem('paymentMethod');
+            return {
+                ...state,
+                cart: {
+                    cartItems: [],
+                    cartPrices: {
+                        itemsPrice: 0,
+                        shippingPrice: 0,
+                        taxPrice: 0,
+                        totalPrice: 0,
+                    },
+                    shippingAddress: {
+                        fullName: '',
+                        address: '',
+                        city: '',
+                        postalCode: '',
+                        country: '',
+                    },
+                    paymentMethod: 'PayPal',
+                    isPaid: false,
+                    paidAt: '',
+                    isDelivered: false,
+                    deliveredAt: '',
+                    createdAt: '',
+                    updatedAt: '',
+                },
             };
         }
         default:
