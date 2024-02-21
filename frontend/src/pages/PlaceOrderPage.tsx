@@ -178,10 +178,14 @@ export default function PlaceOrderPage() {
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>
-                                            Total
+                                            <strong>
+                                                Total
+                                            </strong>
                                         </Col>
                                         <Col>
-                                            {formatoMoneda(cart.cartPrices.totalPrice)}
+                                            <strong>
+                                                {formatoMoneda(cart.cartPrices.totalPrice)}
+                                            </strong>
                                         </Col>
                                     </Row>
                                 </ListGroup.Item>
