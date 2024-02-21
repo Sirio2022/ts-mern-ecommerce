@@ -14,16 +14,10 @@ const placeOrder = expressAsyncHandler(async (req: Request, res: Response) => {
       })),
       shippingAddress: req.body.shippingAddress,
       paymentMethod: req.body.paymentMethod,
-      itemsPrice: req.body.itemsPrice,
-      shippingPrice: req.body.shippingPrice,
-      taxPrice: req.body.taxPrice,
-      totalPrice: req.body.totalPrice,
+      cartPrices: req.body.cartPrices,
       user: req.user._id,
     });
-    res.status(201).json({
-      order: createOrder,
-      message: 'Order created successfully',
-    });
+    res.status(201).json({ message: 'New Order Created', order: createOrder });
   }
 });
 

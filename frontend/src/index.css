@@ -118,3 +118,9 @@ img.thumbnail {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
 }
+
+.cart-link {
+  color: #6f98f1;
+  text-decoration: none;
+  font-size: smaller;
+}

@@ -24,10 +24,10 @@ class ShippingAddress {
   @prop({ required: true })
   public country?: string;
 
-  @prop({ required: true })
+  @prop()
   public lat?: number;
 
-  @prop({ required: true })
+  @prop()
   public lng?: number;
 }
 
@@ -67,43 +67,39 @@ modelOptions({ schemaOptions: { timestamps: true } });
 export class Order {
   public _id!: string;
 
-  @prop({ required: true, allowMixed: Severity.ALLOW })  // allow the use and execution of mongoose.Schema.Types.Mixed, if the inferred type cannot be set otherwise
+  @prop({ ref: User, allowMixed: Severity.ALLOW }) // allow the use and execution of mongoose.Schema.Types.Mixed, if the inferred type cannot be set otherwise
   public user?: Ref<User>;
 
-  @prop({ required: true, allowMixed: Severity.ALLOW }) // allow the use and execution of mongoose.Schema.Types.Mixed, if the inferred type cannot be set otherwise
-  public orderItems?: Item[];
+  @prop({ allowMixed: Severity.ALLOW }) // allow the use and execution of mongoose.Schema.Types.Mixed, if the inferred type cannot be set otherwise
+  public orderItems!: Item[];
 
-  @prop({ required: true })
+  @prop()
   public shippingAddress?: ShippingAddress;
 
   @prop({ required: true })
   public paymentMethod!: string;
 
-  @prop({ required: true })
+  @prop()
   public paymentResult?: PaymentResult;
 
-  @prop({ required: true, default: 0.0 })
-  public itemsPrice!: number;
+  @prop({ allowMixed: Severity.ALLOW })
+  public cartPrices!: {
+    itemsPrice: number;
+    shippingPrice: number;
+    taxPrice: number;
+    totalPrice: number;
+  };
 
-  @prop({ required: true, default: 0.0 })
-  public shippingPrice!: number;
-
-  @prop({ required: true, default: 0.0 })
-  public taxPrice!: number;
-
-  @prop({ required: true, default: 0.0 })
-  public totalPrice!: number;
-
-  @prop({ required: true, default: false })
+  @prop({ default: false })
   public isPaid!: boolean;
 
-  @prop({ required: true })
+  @prop()
   public paidAt!: Date;
 
   @prop({ required: true, default: false })
   public isDelivered!: boolean;
 
-  @prop({ required: true })
+  @prop()
   public deliveredAt!: Date;
 }
 
