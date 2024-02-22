@@ -21,4 +21,13 @@ const placeOrder = expressAsyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { placeOrder };
+const getOrder = expressAsyncHandler(async (req: Request, res: Response) => {
+  const order = await OrderModel.findById(req.params.id);
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404).json({ message: 'Order not found' });
+  }
+});
+
+export { placeOrder, getOrder};

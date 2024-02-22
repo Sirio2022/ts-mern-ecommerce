@@ -15,7 +15,7 @@ export default function PlaceOrderPage() {
 
     const navigate = useNavigate();
 
-    const { state: { cart, userInfo }, dispatch } = useContext(AppStateContext);
+    const { state: { cart }, dispatch } = useContext(AppStateContext);
 
     const round2 = (num: number) => Math.round(num * 100 + Number.EPSILON) / 100;
 
