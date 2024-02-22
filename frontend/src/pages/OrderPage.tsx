@@ -161,22 +161,22 @@ export default function OrderPage() {
                                 {
                                     order.orderItems.map((item) => (
                                         <ListGroup.Item key={item._id}>
-                                            <Row className="align-items-center">
-                                                <Col md={6}>
+                                            <Row className="align-items-center my-5">
+                                                <Col md={8} className="d-flex flex-lg-row align-items-center">
                                                     <img
                                                         src={item.image}
                                                         alt={item.name}
-                                                        className="img-fluid rounded thumbnail"
+                                                        className="img-fluid rounded thumbnail align-items-center mx-2"
                                                     />
-                                                    <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                                    <Link to={`/product/${item.slug}`} >{item.name}</Link>
 
                                                 </Col>
 
-                                                <Col md={3}>
+                                                <Col md={2}>
                                                     <span>{item.qty}</span>
                                                 </Col>
 
-                                                <Col md={3}>
+                                                <Col md={2}>
                                                     {formatoMoneda(item.price)}
                                                 </Col>
                                             </Row>
