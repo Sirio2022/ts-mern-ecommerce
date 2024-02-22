@@ -49,16 +49,16 @@ class Item {
 }
 
 class PaymentResult {
-  @prop({ required: true })
+  @prop()
   public paymentId!: string;
 
-  @prop({ required: true })
+  @prop()
   public status!: string;
 
-  @prop({ required: true })
+  @prop()
   public update_time!: string;
 
-  @prop({ required: true })
+  @prop()
   public email_address!: string;
 }
 

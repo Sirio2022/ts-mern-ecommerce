@@ -30,4 +30,27 @@ const getOrder = expressAsyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { placeOrder, getOrder};
+const paypalPayment = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const order = await OrderModel.findById(req.params.id).populate('user');
+
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = new Date(Date.now());
+      order.paymentResult = {
+        paymentId: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      };
+
+      const updatedOrder = await order.save();
+
+      res.status(200).json({ message: 'Order Paid', order: updatedOrder });
+    } else {
+      res.status(404).json({ message: 'Order Not Found' });
+    }
+  }
+);
+
+export { placeOrder, getOrder, paypalPayment };

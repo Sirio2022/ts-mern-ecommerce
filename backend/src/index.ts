@@ -4,6 +4,7 @@ import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
 import registerRoutes from './routes/registerRouter';
 import orderRoutes from './routes/orderRouter';
+import paypalRoutes from './routes/paypalRouter';
 import seedRoutes from './routes/seedRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -46,6 +47,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users/signin', userRoutes);
 app.use('/api/users/register', registerRoutes);
 app.use('/api/orders', isAuth, orderRoutes);
+app.use('/api/keys/paypal', isAuth, paypalRoutes);
 
 const PORT = process.env.PORT || 5005;
 

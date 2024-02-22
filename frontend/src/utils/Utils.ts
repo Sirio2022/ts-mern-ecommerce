@@ -1,6 +1,16 @@
 import { ApiError } from '../types/ApiError';
 import { CartItem } from '../types/Cart';
 import { Product } from '../types/Products';
+import { format } from '@formkit/tempo';
+
+export const formatearFecha = (fecha: string) => {
+  const l = 'en';
+  const t = new Date(fecha);
+
+  const fechaFormateada = format(t, 'MMMM D, YYYY h:mm a', l);
+
+  return fechaFormateada;
+};
 
 export function formatoMoneda(cantidad: number) {
   return new Intl.NumberFormat('en-US', {
