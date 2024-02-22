@@ -6,7 +6,6 @@ import { ApiError } from "../types/ApiError"
 import { Helmet } from "react-helmet-async"
 import LoadingBox from "../components/LoadingBox"
 import MessageBox from "../components/MessageBox"
-import { table } from "console"
 import { Button } from "react-bootstrap"
 
 
