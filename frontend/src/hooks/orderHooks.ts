@@ -48,3 +48,10 @@ export const useCreateOrderMutation = () =>
         )
       ).data,
   });
+
+export const useOrdersHistoryQuery = () =>
+  useQuery({
+    queryKey: ['orders-history'],
+    queryFn: async () =>
+      (await apiClient.get<Order[]>('/api/orders/mine')).data,
+  });

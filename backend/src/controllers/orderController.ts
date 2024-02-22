@@ -3,6 +3,11 @@ import expressAsyncHandler from 'express-async-handler';
 import { OrderModel } from '../models/orderModel';
 import { Product } from '../models/productModel';
 
+const getOrders = expressAsyncHandler(async (req: Request, res: Response) => {
+  const orders = await OrderModel.find({ user: req.user._id });
+  res.json(orders);
+});
+
 const placeOrder = expressAsyncHandler(async (req: Request, res: Response) => {
   if (req.body.orderItems.length === 0) {
     res.status(400).send({ message: 'Cart is empty' });
@@ -53,4 +58,4 @@ const paypalPayment = expressAsyncHandler(
   }
 );
 
-export { placeOrder, getOrder, paypalPayment };
+export { placeOrder, getOrder, paypalPayment, getOrders };
