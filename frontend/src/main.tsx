@@ -42,7 +42,6 @@ const router = createBrowserRouter(
         <Route path='placeorder' element={<PlaceOrderPage />} />
         <Route path='/order/:orderId' element={<OrderPage />} />
         <Route path='/orderhistory' element={<OrderHistoryPage />} />
-
       </Route>
 
       {/*</*Route path="dashboard" element={<Dashboard />} >*/}

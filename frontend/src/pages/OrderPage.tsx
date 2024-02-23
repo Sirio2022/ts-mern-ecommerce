@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { AppStateContext } from "../Store";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOrderDetailsQuery, usePaypalClientIdQuery, usePaypalPaymentMutation } from "../hooks/orderHooks";
 import MessageBox from "../components/MessageBox";
@@ -20,8 +19,6 @@ export default function OrderPage() {
 
     const params = useParams();
     const { orderId } = params as { orderId: string };
-
-    const { state: { userInfo }, dispatch } = useContext(AppStateContext);
 
     const { data: order, isLoading, error, refetch } = useOrderDetailsQuery(orderId!);
 
@@ -63,7 +60,7 @@ export default function OrderPage() {
         style: {
             layout: 'vertical',
         },
-        createOrder: (data, actions) => {
+        createOrder: (_data, actions) => {
             return actions.order.create({
                 purchase_units: [
                     {
@@ -77,7 +74,7 @@ export default function OrderPage() {
 
             })
         },
-        onApprove: async (data, actions: any) => {
+        onApprove: async (_data, actions: any) => {
             return actions.order.capture().then(async (details: any) => {
                 try {
                     payOrder({ orderId: orderId!, ...details });
@@ -93,8 +90,6 @@ export default function OrderPage() {
             toast.error('PayPal Error');
         },
     };
-
-
 
     return isLoading ? (
         <LoadingBox />

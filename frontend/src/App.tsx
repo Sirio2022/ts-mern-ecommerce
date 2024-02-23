@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { Badge, Button, Container, Form, InputGroup, Nav, NavDropdown, Navbar } from 'react-bootstrap'
+import { Button, Container, Form, InputGroup, Nav, NavDropdown, Navbar } from 'react-bootstrap'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -145,7 +145,7 @@ function App() {
           <div className="sub-header">
             <div className="d-flex">
               <Link
-                to='#' className='header-link nav-link p-1' 
+                to='#' className='header-link nav-link p-1'
               >
 
                 <i className="fa fa-bars"></i> All

@@ -4,35 +4,35 @@ import { modelOptions, prop, getModelForClass } from '@typegoose/typegoose';
 export class Product {
   public _id?: string;
 
-  @prop({ required: true })
+  @prop()
   public name!: string;
 
-  @prop({ required: true, unique: true })
+  @prop({ unique: true })
   public slug!: string;
 
-  @prop({ required: true })
+  @prop()
   public image!: string;
 
-  @prop({ required: true })
+  @prop()
   public brand!: string;
 
-  @prop({ required: true })
+  @prop()
   public category!: string;
 
-  @prop({ required: true })
+  @prop()
   public description!: string;
 
-  @prop({ required: true, default: 0 })
+  @prop({ default: 0 })
   public price!: number;
 
-  @prop({ required: true, default: 0 })
+  @prop({ default: 0 })
   public countInStock!: number;
 
-  @prop({ required: true, default: 0 })
+  @prop({ default: 0 })
   public rating!: number;
 
-  @prop({ required: true, default: 0 })
+  @prop({ default: 0 })
   public numReviews!: number;
 }
 
-export const ProductModel = getModelForClass(Product)
+export const ProductModel = getModelForClass(Product);
