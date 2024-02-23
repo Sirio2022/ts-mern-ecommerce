@@ -27,8 +27,6 @@ if (dataBaseConnection) {
     .then(() => console.log('MongoDB connected successfully'));
 }
 
-// Cors configuration
-
 // Enable CORS
 app.use(
   cors({
