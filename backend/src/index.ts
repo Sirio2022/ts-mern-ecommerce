@@ -28,21 +28,14 @@ if (dataBaseConnection) {
 }
 
 // Cors configuration
-const whitelist = [process.env.FRONTEND_URL];
-const corsOptions = {
-  origin: (origin: string | undefined, callback: any) => {
-    // Review the access to the server
-    const exist = whitelist.some((domain) => domain === origin);
-    if (exist) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
 
 // Enable CORS
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 // Routes
 app.use('/api/products', productRoutes);
