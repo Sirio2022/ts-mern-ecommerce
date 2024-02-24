@@ -16,4 +16,11 @@ const getProduct = expressAsyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { getProducts, getProduct };
+const getCategoryProducts = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const categories = await ProductModel.find().distinct('category');
+    res.json(categories);
+  }
+);
+
+export { getProducts, getProduct, getCategoryProducts };
