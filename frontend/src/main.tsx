@@ -25,6 +25,7 @@ import PlaceOrderPage from './pages/PlaceOrderPage.tsx';
 import OrderPage from './pages/OrderPage.tsx';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import OrderHistoryPage from './pages/OrderHistoryPage.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
         <Route path='placeorder' element={<PlaceOrderPage />} />
         <Route path='/order/:orderId' element={<OrderPage />} />
         <Route path='/orderhistory' element={<OrderHistoryPage />} />
+        <Route path='/userprofile' element={<ProfilePage />} />
       </Route>
 
       {/*</*Route path="dashboard" element={<Dashboard />} >*/}

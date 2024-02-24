@@ -39,6 +39,7 @@ app.use(
 app.use('/api/products', productRoutes);
 app.use('/api/users/signin', userRoutes);
 app.use('/api/users/register', registerRoutes);
+app.use('/api/users/profile', isAuth, userRoutes);
 app.use('/api/orders', isAuth, orderRoutes);
 app.use('/api/keys/paypal', isAuth, paypalRoutes);
 

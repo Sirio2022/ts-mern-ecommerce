@@ -29,4 +29,33 @@ const getUser = expressAsyncHandler(async (req: Request, res: Response) => {
   res.status(401).json({ message: 'Invalid Email or Password' });
 });
 
-export { getUser };
+const userUpdate = expressAsyncHandler(async (req: Request, res: Response) => {
+  const user = await UserModel.findById(req.user._id);
+
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password) {
+      user.password = bcrypt.hashSync(req.body.password, 10);
+    }
+
+    const updateUser = await user.save();
+
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+      token: generateToken(updateUser),
+    });
+    return;
+  }
+});
+
+export { getUser, userUpdate };

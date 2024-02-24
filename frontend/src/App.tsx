@@ -83,7 +83,7 @@ function App() {
                       title={` Hello ${userInfo.name} `}
 
                     >
-                      <LinkContainer to="/profile">
+                      <LinkContainer to="/userprofile">
                         <NavDropdown.Item> User Profile</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
