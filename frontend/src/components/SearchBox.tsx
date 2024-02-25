@@ -13,6 +13,7 @@ export default function SearchBox() {
     const submitHandler = (e: React.SyntheticEvent) => {
         e.preventDefault()
         navigate(query ? `/search/?query=${query}` : '/search')
+        setQuery('')
     }
 
     return (

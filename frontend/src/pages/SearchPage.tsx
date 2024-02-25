@@ -33,6 +33,10 @@ export default function SearchPage() {
                         content='Electic guitars, accoustic guitars, pianos, drums, music, music store, buy instruments, buy music instruments, buy guitars, buy pianos, buy drums, buy music gear, music gear, music equipment, music accessories, music store, music shop, music instruments, music instruments store, music instruments shop, music instruments online, music instruments for sale, music instruments near me, music instruments online store, music instruments online shop, music instruments online sale, music instruments online near me, music instruments online for sale'
                     />
                 </Helmet>
+                {products!.length === 0 && (
+                    <MessageBox variant='warning'>No products found with this name.</MessageBox>
+
+                )}
                 {products!.map((product) => (
                     <Col
                         key={product.slug}

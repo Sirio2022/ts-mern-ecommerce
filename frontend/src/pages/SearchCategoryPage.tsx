@@ -19,7 +19,7 @@ export default function SearchCategoryPage() {
         isLoading ? (
             <LoadingBox />
         ) : error ? (
-            <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
+            <MessageBox variant='warning'>{getError(error as ApiError)}</MessageBox>
         ) : (
             <Row>
                 <Helmet>

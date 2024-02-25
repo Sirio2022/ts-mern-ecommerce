@@ -147,7 +147,7 @@ function App() {
               {['Guitars', 'Bass', 'Drums', 'Keyboards', 'Microphones', 'Headphones', 'Speakers', 'Accessories'].map((category, index) => (
                 <Link
                   key={index}
-                  to={`/search/category/${category}`}
+                  to={{ pathname: '/search/category', search: `category=${category}` }}
                   className='header-link nav-link p-1 px-3'
                 >
                   {category}
