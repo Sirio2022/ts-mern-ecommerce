@@ -19,4 +19,4 @@
   <li>PayPal and Stipe for online payment</li>
 </ul>
 
-# Demo: <Link><a target="_blank">https://ts-mern-ecommerce.onrender.com </a></link>
+# Demo: <a href="https://ts-mern-ecommerce.onrender.com" target="_blank" >https://ts-mern-ecommerce.onrender.com</a>
