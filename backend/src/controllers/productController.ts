@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import e, { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { ProductModel } from '../models/productModel';
 
@@ -23,4 +23,31 @@ const getCategoryProducts = expressAsyncHandler(
   }
 );
 
-export { getProducts, getProduct, getCategoryProducts };
+const getSearchProducts = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const query = req.query.query
+      ? { name: { $regex: req.query.query, $options: 'i' } }
+      : {};
+    const products = await ProductModel.find({ ...query });
+    res.json(products);
+  }
+);
+
+const getSearchCategoryProducts = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const products = await ProductModel.find({ category: req.params.category });
+    if (products.length === 0) {
+      res.status(404).json({ message: 'No products found in this category' });
+      return;
+    }
+    res.json(products);
+  }
+);
+
+export {
+  getProducts,
+  getProduct,
+  getCategoryProducts,
+  getSearchProducts,
+  getSearchCategoryProducts,
+};

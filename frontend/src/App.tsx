@@ -209,7 +209,7 @@ function App() {
             categories!.map((category) => (
               <ListGroup.Item action key={category}>
                 <LinkContainer
-                  to={{ pathname: '/search', search: `category=${category}` }}
+                  to={{ pathname: '/search/', search: `category=${category}` }}
                   onClick={() => setSidebarIsOpen(false)}
                 >
                   <Nav.Link>

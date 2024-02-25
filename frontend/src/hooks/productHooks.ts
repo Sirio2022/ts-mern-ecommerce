@@ -24,3 +24,24 @@ export const useGetProductCategoriesQuery = () => {
       (await apiClient.get<string[]>('api/products/categories')).data,
   });
 };
+
+export const useGetSearchProductsQuery = (query: string) => {
+  return useQuery({
+    queryKey: ['search', query],
+    queryFn: async () =>
+      (await apiClient.get<Product[]>(`api/products/search/?query=${query}`))
+        .data,
+  });
+};
+
+export const useGetSearchCategoryProductsQuery = (query: string) => {
+  return useQuery({
+    queryKey: ['searchCategory', query],
+    queryFn: async () =>
+      (
+        await apiClient.get<Product[]>(
+          `api/products/search/category/${query}`
+        )
+      ).data,
+  });
+};
