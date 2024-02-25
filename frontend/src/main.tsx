@@ -37,8 +37,9 @@ const router = createBrowserRouter(
       <Route path='cart' element={<CartPage />} />
       <Route path='signin' element={<SigninPage />} />
       <Route path='register' element={<RegisterPage />} />
-      <Route path='search/:category' element={<SearchCategoryPage />} />
+      <Route path='search/category' element={<SearchCategoryPage />} />
       <Route path='search' element={<SearchPage />} />
+      
    
 
       {/* Protected Routes */}
