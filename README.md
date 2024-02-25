@@ -1,3 +1,9 @@
+# Music Store
+<h1>Created by Juan Manuel Alvarez</h1>
+<h3>Cel: 301-296-62-26</h3>
+<h3>Medellín Colombia</h3>
+<h2>Demo: <link>https://ts-mern-ecommerce.onrender.com/ </link> </h2> 
+
 ![1](https://github.com/Sirio2022/ts-mern-ecommerce/assets/105917953/0d1d0bf2-2f5a-47e9-a5a5-3c15eeadb148)
 
 <ul>
