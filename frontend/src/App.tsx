@@ -137,7 +137,7 @@ function App() {
           <div className="sub-header">
             <div className="d-flex">
               <Link
-                to='#'
+                to='/search'
                 className='header-link nav-link p-1'
                 onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
               >
