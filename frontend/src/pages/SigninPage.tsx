@@ -23,9 +23,7 @@ export default function SigninPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { state, dispatch } = useContext(AppStateContext)
-
-    const { userInfo } = state;
+    const { state: { userInfo }, dispatch } = useContext(AppStateContext)
 
     const { mutateAsync: signin, isPending } = useSignInMutation();
 
