@@ -222,3 +222,7 @@ a.header-link:hover,
 button.side-navbar-user:hover {
   color: white;
 }
+
+.dashboard-data {
+  color: #f08000;
+}

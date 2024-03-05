@@ -38,10 +38,8 @@ export const useGetSearchCategoryProductsQuery = (query: string) => {
   return useQuery({
     queryKey: ['searchCategory', query],
     queryFn: async () =>
-      (
-        await apiClient.get<Product[]>(
-          `api/products/search/category/${query}`
-        )
-      ).data,
+      (await apiClient.get<Product[]>(`api/products/search/category/${query}`))
+        .data,
   });
 };
+

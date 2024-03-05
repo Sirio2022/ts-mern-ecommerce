@@ -1,11 +1,11 @@
-import e, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { ProductModel } from '../models/productModel';
 
 const getProducts = expressAsyncHandler(async (req: Request, res: Response) => {
   const products = await ProductModel.find().sort({ createdAt: 1 });
   res.json(products);
-});
+}) as any;
 
 const getProduct = expressAsyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findOne({ slug: req.params.slug });
@@ -14,14 +14,14 @@ const getProduct = expressAsyncHandler(async (req: Request, res: Response) => {
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
-});
+}) as any;
 
 const getCategoryProducts = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const categories = await ProductModel.find().distinct('category');
     res.json(categories);
   }
-);
+) as any;
 
 const getSearchProducts = expressAsyncHandler(
   async (req: Request, res: Response) => {
@@ -31,7 +31,7 @@ const getSearchProducts = expressAsyncHandler(
     const products = await ProductModel.find({ ...query });
     res.json(products);
   }
-);
+) as any;
 
 const getSearchCategoryProducts = expressAsyncHandler(
   async (req: Request, res: Response) => {
@@ -42,7 +42,7 @@ const getSearchCategoryProducts = expressAsyncHandler(
     }
     res.json(products);
   }
-);
+) as any;
 
 export {
   getProducts,

@@ -21,6 +21,7 @@ import RegisterPage from './pages/RegisterPage.tsx';
 import ShippingAddressPage from './pages/ShippingAddressPage.tsx';
 import PaymentMethodPage from './pages/PaymentMethodPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute.tsx';
 import PlaceOrderPage from './pages/PlaceOrderPage.tsx';
 import OrderPage from './pages/OrderPage.tsx';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -28,6 +29,8 @@ import OrderHistoryPage from './pages/OrderHistoryPage.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
 import SearchPage from './pages/SearchPage.tsx';
 import SearchCategoryPage from './pages/SearchCategoryPage.tsx';
+import DashboardPage from './pages/DashboardPage.tsx';
+import OrdersPage from './pages/OrdersPage.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,8 +42,8 @@ const router = createBrowserRouter(
       <Route path='register' element={<RegisterPage />} />
       <Route path='search/category' element={<SearchCategoryPage />} />
       <Route path='search' element={<SearchPage />} />
-      
-   
+
+
 
       {/* Protected Routes */}
       <Route path='' element={<ProtectedRoute />} >
@@ -51,6 +54,14 @@ const router = createBrowserRouter(
         <Route path='/orderhistory' element={<OrderHistoryPage />} />
         <Route path='/userprofile' element={<ProfilePage />} />
       </Route>
+
+      <Route path='' element={<ProtectedAdminRoute />} >
+        <Route path='/dashboard' element={<DashboardPage />} />
+        <Route path='/adminorders' element={<OrdersPage />} />
+
+      </Route>
+
+
 
       {/*</*Route path="dashboard" element={<Dashboard />} >*/}
       {/* ... etc. */}

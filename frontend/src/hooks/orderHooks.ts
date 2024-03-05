@@ -55,3 +55,37 @@ export const useOrdersHistoryQuery = () =>
     queryFn: async () =>
       (await apiClient.get<Order[]>('/api/orders/mine')).data,
   });
+
+export const useOrderSummaryQuery = () =>
+  useQuery({
+    queryKey: ['order-summary'],
+    queryFn: async () =>
+      (
+        await apiClient.get<{
+          ordersCount: number;
+          usersCount: number;
+          productsCount: number;
+          ordersPrice: number;
+          salesData: { _id: string; totalOrders: number; totalSales: number }[];
+          productsData: { _id: string; totalProducts: number }[];
+          userData: { _id: string; totalUsers: number }[];
+        }>('/api/orders/summary')
+      ).data,
+  });
+
+export const useAdminOrdersQuery = () =>
+  useQuery({
+    queryKey: ['admin-orders'],
+    queryFn: async () =>
+      (await apiClient.get<Order[]>('/api/orders/adminorders')).data,
+  });
+
+export const useDeliverOrderMutation = () =>
+  useMutation({
+    mutationFn: async (orderId: string) =>
+      (
+        await apiClient.put<{ order: Order }>(
+          `/api/orders/adminorders/${orderId}/deliver`
+        )
+      ).data,
+  });

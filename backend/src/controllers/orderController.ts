@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { OrderModel } from '../models/orderModel';
-import { Product } from '../models/productModel';
+import { Product, ProductModel } from '../models/productModel';
+import { UserModel } from '../models/userModel';
 
 const getOrders = expressAsyncHandler(async (req: Request, res: Response) => {
   const orders = await OrderModel.find({ user: req.user._id });
@@ -58,4 +59,113 @@ const paypalPayment = expressAsyncHandler(
   }
 );
 
-export { placeOrder, getOrder, paypalPayment, getOrders };
+const Summary = expressAsyncHandler(async (req: Request, res: Response) => {
+  const ordersCount = await OrderModel.countDocuments();
+  const usersCount = await UserModel.countDocuments();
+  const productsCount = await ProductModel.countDocuments();
+
+  const ordersPriceGroup = await OrderModel.aggregate([
+    {
+      $group: {
+        _id: null,
+        sales: { $sum: '$cartPrices.totalPrice' },
+      },
+    },
+  ]);
+
+  const ordersPrice =
+    ordersPriceGroup.length > 0 ? ordersPriceGroup[0]?.sales : 0;
+
+  const salesData = await OrderModel.aggregate([
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+        totalOrders: { $sum: 1 },
+        totalSales: { $sum: '$cartPrices.totalPrice' },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  const productsData = await ProductModel.aggregate([
+    {
+      $group: {
+        _id: '$category',
+        totalProducts: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  const userData = await UserModel.aggregate([
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+        totalUsers: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  res.json({
+    ordersCount,
+    usersCount,
+    productsCount,
+    ordersPrice,
+    salesData,
+    productsData,
+    userData,
+  });
+});
+
+const getAdminOrders = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.user?.isAdmin) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+    const orders = await OrderModel.find({})
+      .sort({ createdAt: -1 })
+      .populate('user', 'name');
+    res.json(orders);
+  }
+) as any;
+
+const updateAdminOrder = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.user?.isAdmin) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+    const order = await OrderModel.findById(req.params.id);
+
+    if (order) {
+      if (!order.isPaid) res.status(400).json({ message: 'Order not paid' });
+
+      order.isDelivered = true;
+      order.deliveredAt = new Date(Date.now());
+
+      const updatedOrder = await order.save();
+
+      res.status(200).json({ message: 'Order Delivered', order: updatedOrder });
+    } else {
+      res.status(404).json({ message: 'Order Not Found' });
+    }
+  }
+) as any;
+
+export {
+  placeOrder,
+  getOrder,
+  paypalPayment,
+  getOrders,
+  Summary,
+  getAdminOrders,
+  updateAdminOrder,
+};

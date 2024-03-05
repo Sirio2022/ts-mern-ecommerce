@@ -7,6 +7,7 @@ import {
   getSearchCategoryProducts,
 } from '../controllers/productController';
 
+
 const router = express.Router();
 
 router.get('/', getProducts);

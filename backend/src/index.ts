@@ -4,6 +4,7 @@ import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
 import registerRoutes from './routes/registerRouter';
 import orderRoutes from './routes/orderRouter';
+
 import paypalRoutes from './routes/paypalRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -28,12 +29,18 @@ if (dataBaseConnection) {
 }
 
 // Enable CORS
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-  })
-);
+const whitelist = [process.env.FRONTEND_URL as string];
+
+const corsOptions = {
+  origin: function (origin: string, callback: Function) {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+app.use(cors(corsOptions as cors.CorsOptions));
 
 // Routes
 app.use('/api/products', productRoutes);

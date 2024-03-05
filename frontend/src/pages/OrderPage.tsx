@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useOrderDetailsQuery, usePaypalClientIdQuery, usePaypalPaymentMutation } from "../hooks/orderHooks";
+import { useOrderDetailsQuery, usePaypalClientIdQuery, usePaypalPaymentMutation, useDeliverOrderMutation } from "../hooks/orderHooks";
 import MessageBox from "../components/MessageBox";
 import { formatoMoneda, getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
@@ -10,6 +10,7 @@ import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { PayPalButtons, PayPalButtonsComponentProps, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { formatearFecha } from "../utils/Utils";
+import { AppStateContext } from "../Store";
 
 
 export default function OrderPage() {
@@ -29,7 +30,11 @@ export default function OrderPage() {
         }
     }
 
+    const { state: { userInfo } } = useContext(AppStateContext);
+
     const { mutateAsync: payOrder, isPending: loadingPay } = usePaypalPaymentMutation();
+
+    const { mutateAsync: deliverOrder, isPending: loadingDeliver } = useDeliverOrderMutation();
 
     const testPaypalHandler = async () => {
         await payOrder({ orderId: orderId! });
@@ -118,7 +123,7 @@ export default function OrderPage() {
                                 {order!.shippingAddress.city}, {order!.shippingAddress.country}, Postal Code: {order!.shippingAddress.postalCode},
                             </Card.Text>
                             {order.isDelivered ? (
-                                <MessageBox variant="success">Delivered at {order.deliveredAt}</MessageBox>
+                                <MessageBox variant="success">Delivered at {formatearFecha(order.deliveredAt)}</MessageBox>
                             ) : (
                                 <MessageBox variant="warning">Not Delivered</MessageBox>
                             )}
@@ -257,6 +262,23 @@ export default function OrderPage() {
 
                                     </ListGroup.Item>
                                 )}
+
+                                {userInfo?.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button
+                                            type="button"
+                                            className="btn btn-block"
+                                            onClick={async () => {
+                                                await deliverOrder(order._id);
+                                                refetch();
+                                                toast.success('Order Delivered');
+                                            }}
+                                        >
+                                            {loadingDeliver ? <LoadingBox /> : 'Deliver Order'}
+                                        </Button>
+                                    </ListGroup.Item>
+                                )}
+
                             </ListGroup>
 
                         </Card.Body>
