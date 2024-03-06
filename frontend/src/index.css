@@ -226,3 +226,7 @@ button.side-navbar-user:hover {
 .dashboard-data {
   color: #f08000;
 }
+
+.table-overflow {
+  overflow-x: auto;
+}

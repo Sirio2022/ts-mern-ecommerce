@@ -31,6 +31,10 @@ import SearchPage from './pages/SearchPage.tsx';
 import SearchCategoryPage from './pages/SearchCategoryPage.tsx';
 import DashboardPage from './pages/DashboardPage.tsx';
 import OrdersPage from './pages/OrdersPage.tsx';
+import AdminProductsPage from './pages/AdminProductsPage.tsx';
+
+import CreateProductPage from './pages/CreateProductPage.tsx';
+import AdminUpdateProductPage from './pages/AdminUpdateProductPage.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -58,6 +62,9 @@ const router = createBrowserRouter(
       <Route path='' element={<ProtectedAdminRoute />} >
         <Route path='/dashboard' element={<DashboardPage />} />
         <Route path='/adminorders' element={<OrdersPage />} />
+        <Route path='/adminproduct/:id/edit' element={<AdminUpdateProductPage />} />
+        <Route path='/adminproducts' element={<AdminProductsPage />} />
+        <Route path='/admincreateproduct' element={<CreateProductPage />} />
 
       </Route>
 

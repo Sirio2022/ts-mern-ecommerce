@@ -88,7 +88,7 @@ function App() {
                             <NavDropdown.Item> Orders</NavDropdown.Item>
                           </LinkContainer>
 
-                          <LinkContainer to="/productlist">
+                          <LinkContainer to="/adminproducts">
                             <NavDropdown.Item> Products</NavDropdown.Item>
                           </LinkContainer>
 

@@ -38,6 +38,7 @@ export default function HomePage() {
             lg={3}
           >
             <ProductItem product={product} />
+
           </Col>
         ))}
       </Row>

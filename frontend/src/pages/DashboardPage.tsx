@@ -150,7 +150,7 @@ export default function DashboardPage() {
           }
         >Orders</Link>
         <Link
-          to="/listproducts"
+          to="/adminproducts"
           className={
             pathname === '/listproducts'
               ? 'btn btn-dark my-1 w-100 text-start active'
