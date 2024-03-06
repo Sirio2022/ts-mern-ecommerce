@@ -8,10 +8,10 @@ import { ApiError } from "../types/ApiError";
 
 
 export default function AdminProductsPage() {
+    const { data: products, isLoading, error } = useGetAdminProductsQuery();
 
     const { pathname } = useLocation();
 
-    const { data: products, isLoading, error } = useGetAdminProductsQuery();
 
     const { mutateAsync: deleteProduct, isPending: deleteLoading, error: deleteError } = useDeleteAdminProductMutation();
 
