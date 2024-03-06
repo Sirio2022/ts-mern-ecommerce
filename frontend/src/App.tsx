@@ -75,31 +75,7 @@ function App() {
                       title={` Hello ${userInfo.name} `}
 
                     >
-                      {userInfo.isAdmin && (
-                        <NavDropdown
-                          className='header*-link'
-                          title={`Admin Dashboard`}
-                        >
-                          <LinkContainer to="/dashboard">
-                            <NavDropdown.Item> Dashboard</NavDropdown.Item>
-                          </LinkContainer>
 
-                          <LinkContainer to="/adminorders">
-                            <NavDropdown.Item> Orders</NavDropdown.Item>
-                          </LinkContainer>
-
-                          <LinkContainer to="/adminproducts">
-                            <NavDropdown.Item> Products</NavDropdown.Item>
-                          </LinkContainer>
-
-                          <LinkContainer to="/users"  >
-                            <NavDropdown.Item> Users</NavDropdown.Item>
-                          </LinkContainer>
-
-                        </NavDropdown>
-
-
-                      )}
 
                       <LinkContainer to="/userprofile">
                         <NavDropdown.Item> User Profile</NavDropdown.Item>
@@ -131,6 +107,31 @@ function App() {
                     </NavDropdown>
                   )
                 }
+                {userInfo?.isAdmin && (
+                  <NavDropdown
+                    className='header*-link'
+                    title={`Admin Dashboard`}
+                  >
+                    <LinkContainer to="/dashboard">
+                      <NavDropdown.Item> Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to="/adminorders">
+                      <NavDropdown.Item> Orders</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to="/adminproducts">
+                      <NavDropdown.Item> Products</NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to="/users"  >
+                      <NavDropdown.Item> Users</NavDropdown.Item>
+                    </LinkContainer>
+
+                  </NavDropdown>
+
+
+                )}
                 <Link
                   to='/orderhistory'
                   className='nav-link header-link'

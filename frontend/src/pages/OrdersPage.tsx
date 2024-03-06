@@ -44,9 +44,9 @@ export default function OrdersPage() {
                     }
                 >Orders</Link>
                 <Link
-                    to="/listproducts"
+                    to="/adminproducts"
                     className={
-                        pathname === '/listproducts'
+                        pathname === '/adminproducts'
                             ? 'btn btn-dark my-1 w-100 text-start active'
                             : 'btn btn-dark my-1 w-100 text-start'
                     }
