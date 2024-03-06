@@ -21,9 +21,7 @@ export default function AdminProductsPage() {
         return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
     }
 
-    if (!products) return <Spinner />
-
-    if (products.length === 0) return <MessageBox>No products found</MessageBox>
+    if (products?.length === 0) return <MessageBox>No products found</MessageBox>
 
 
     return (
@@ -94,10 +92,10 @@ export default function AdminProductsPage() {
                             </thead>
 
                             <tbody>
-                                {products.map(product => (
+                                {products?.map(product => (
                                     <tr key={product._id}>
                                         <td>{product._id && `...${product._id.substring(20, 24)}`}</td>
-                                        <td>{product.name.substring(0, 20)}</td>
+                                        <td>{product.name}</td>
                                         <td>{formatoMoneda(product.price)}</td>
                                         <td>{product.category}</td>
                                         <td>{product.countInStock}</td>

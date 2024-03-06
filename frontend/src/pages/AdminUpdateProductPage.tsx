@@ -13,7 +13,7 @@ export default function CreateProductPage() {
 
     const { id } = useParams();
 
-    const { data: productById, isLoading, error: errorProduct } = useGetProductByIdQuery(id as string);
+    const { data: productById, isLoading, error: errorProduct, isPending: loadingProduct, refetch } = useGetProductByIdQuery(id as string);
 
     const navigate = useNavigate();
 
@@ -31,11 +31,13 @@ export default function CreateProductPage() {
     const [rating, setRating] = useState(productById?.rating as number)
     const [numReviews, setNumReviews] = useState(productById?.numReviews as number)
 
-    if (isPending || isLoading) return <Spinner />
+    if (isPending || isLoading || loadingProduct) return <Spinner />
 
     if (error || errorProduct) {
         return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
     }
+
+
 
     const product = {
         _id: id,
@@ -54,6 +56,7 @@ export default function CreateProductPage() {
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault();
         updateProduct(product);
+        refetch();
         navigate('/adminproducts');
     }
 
@@ -63,7 +66,7 @@ export default function CreateProductPage() {
                 md={6}
                 className='mx-auto'
             >
-                <h1>Create Product</h1>
+                <h1>Edit Product</h1>
 
                 <form
                     onSubmit={submitHandler}
