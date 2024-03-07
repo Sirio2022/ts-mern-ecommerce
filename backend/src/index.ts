@@ -4,13 +4,14 @@ import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
 import registerRoutes from './routes/registerRouter';
 import orderRoutes from './routes/orderRouter';
-
 import paypalRoutes from './routes/paypalRouter';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import { isAuth } from './utils';
 import path from 'path';
 import { Request, Response } from 'express';
+import cloudinary from 'cloudinary';
+import crypto from 'crypto';
 
 const app = express();
 dotenv.config();
@@ -35,6 +36,27 @@ app.use(
     credentials: true,
   })
 );
+
+
+// Configura Cloudinary con tus credenciales
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+app.get('/api/cloudinary/signature', (req: Request, res: Response) => {
+  // Genera una firma
+  const timestamp = Math.floor((new Date()).getTime() / 1000);
+  const params_to_sign = {
+    timestamp: timestamp,
+    upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET
+  };
+  const signature = crypto.createHash('sha1').update(cloudinary.v2.utils.api_sign_request(params_to_sign, process.env.CLOUDINARY_API_SECRET || '')).digest('hex');
+
+  // Envía la firma y el timestamp como respuesta
+  res.json({ signature, timestamp });
+});
 
 // Routes
 app.use('/api/products', productRoutes);

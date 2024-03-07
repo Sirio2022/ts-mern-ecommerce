@@ -72,6 +72,15 @@ export default function CreateProductPage() {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', 'ts_mern_ecommerce'); // replace 'your_upload_preset' with your actual upload preset
+    
+            // Fetch the signature and timestamp from the server
+            const signatureResponse = await fetch('/api/cloudinary/signature');
+            const { signature, timestamp } = await signatureResponse.json();
+    
+            // Add the signature and timestamp to the form data
+            formData.append('signature', signature);
+            formData.append('timestamp', `${timestamp}`);
+    
             setLoadingUpload(true);
             try {
                 const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, { // replace 'your_cloud_name' with your actual Cloudinary cloud name
