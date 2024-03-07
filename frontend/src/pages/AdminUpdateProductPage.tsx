@@ -6,6 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
 import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 
 export default function CreateProductPage() {
@@ -28,6 +29,8 @@ export default function CreateProductPage() {
     const [countInStock, setCountInStock] = useState(0)
     const [rating, setRating] = useState(0)
     const [numReviews, setNumReviews] = useState(0)
+    const [loadingUpload, setLoadingUpload] = useState(false);
+    const [errorUpload, setErrorUpload] = useState('');
 
     useEffect(() => {
         if (productById) {
@@ -63,6 +66,28 @@ export default function CreateProductPage() {
         await updateProduct(product);
         await refetch();
         navigate('/adminproducts');
+    }
+
+    const uploadHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.item(0);
+        if (file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            setLoadingUpload(true);
+            try {
+                const { data } = await apiClient.post<string>('api/uploads', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                setImage(data.replace(/\\/g, '/')); // replace backslashes with forward slashes. Windows uses backslashes for file paths, while Unix-based systems use forward slashes.
+                setLoadingUpload(false);
+            } catch (err) {
+                setErrorUpload(getError(err as ApiError) || 'Something went wrong' as string);
+                setLoadingUpload(false);
+            }
+        }
     }
 
     return (
@@ -124,6 +149,26 @@ export default function CreateProductPage() {
                                 value={image}
                                 onChange={(e) => setImage(e.target.value)}
                             />
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="imageFile">Image File</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                id="imageFile"
+                                aria-describedby="imageFile"
+                                placeholder="Choose your image file"
+                                onChange={uploadHandler}
+                            />
+                            {loadingUpload && <Spinner />}
+                            {errorUpload && (
+                                <MessageBox
+                                    variant='danger'
+                                    children={errorUpload}
+                                />
+                            )}
+
                         </div>
 
                         <div className="mb-3">

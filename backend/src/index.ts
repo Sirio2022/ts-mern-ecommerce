@@ -4,6 +4,7 @@ import productRoutes from './routes/productRouter';
 import userRoutes from './routes/userRouter';
 import registerRoutes from './routes/registerRouter';
 import orderRoutes from './routes/orderRouter';
+import uploadRoutes from './routes/uploadRouter';
 
 import paypalRoutes from './routes/paypalRouter';
 import cors from 'cors';
@@ -43,12 +44,17 @@ app.use('/api/users/register', registerRoutes);
 app.use('/api/users/profile', isAuth, userRoutes);
 app.use('/api/orders', isAuth, orderRoutes);
 app.use('/api/keys/paypal', isAuth, paypalRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // Serve static files
+
+app.use('/uploads', express.static(path.join(__dirname, '../../frontend/uploads')));
+
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 app.get('*', (req: Request, res: Response) =>
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'))
 );
+
 
 const PORT: number = parseInt((process.env.PORT || '5005') as string, 10);
 
