@@ -6,6 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
 import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 export default function CreateProductPage() {
 
@@ -72,22 +73,27 @@ export default function CreateProductPage() {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', 'ts_mern_ecommerce'); // replace 'your_upload_preset' with your actual upload preset
-    
+
             // Fetch the signature and timestamp from the server
-            const signatureResponse = await fetch('/api/cloudinary/signature');
-            const { signature, timestamp } = await signatureResponse.json();
-    
+            const signatureResponse = await apiClient.get('api/cloudinary/signature');
+            const { signature, timestamp } = signatureResponse.data;
+
             // Add the signature and timestamp to the form data
             formData.append('signature', signature);
             formData.append('timestamp', `${timestamp}`);
-    
+
+            // Add the API key to the form data
+            formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY); // replace 'your_api_key' with your actual API key
+
             setLoadingUpload(true);
             try {
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, { // replace 'your_cloud_name' with your actual Cloudinary cloud name
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
                     method: 'POST',
                     body: formData,
                 });
                 if (!response.ok) {
+                    const errorResponse = await response.text();
+                    console.log('Error response:', errorResponse);
                     throw new Error('Upload failed');
                 }
                 const data = await response.json();

@@ -6,6 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../apiClient";
 
 
 export default function CreateProductPage() {
@@ -22,6 +23,8 @@ export default function CreateProductPage() {
   const [countInStock, setCountInStock] = useState(0)
   const [rating, setRating] = useState(0)
   const [numReviews, setNumReviews] = useState(0)
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState('');
 
   const { mutateAsync: createProduct, isPending, error } = useCreateAdminProductMutation();
 
@@ -48,6 +51,45 @@ export default function CreateProductPage() {
     e.preventDefault();
     createProduct(product);
     navigate('/adminproducts');
+  }
+
+  const uploadHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.item(0);
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'ts_mern_ecommerce'); // replace 'your_upload_preset' with your actual upload preset
+
+      // Fetch the signature and timestamp from the server
+      const signatureResponse = await apiClient.get('api/cloudinary/signature');
+      const { signature, timestamp } = signatureResponse.data;
+
+      // Add the signature and timestamp to the form data
+      formData.append('signature', signature);
+      formData.append('timestamp', `${timestamp}`);
+
+      // Add the API key to the form data
+      formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY); // replace 'your_api_key' with your actual API key
+
+      setLoadingUpload(true);
+      try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+        if (!response.ok) {
+          const errorResponse = await response.text();
+          console.log('Error response:', errorResponse);
+          throw new Error('Upload failed');
+        }
+        const data = await response.json();
+        setImage(data.secure_url);
+        setLoadingUpload(false);
+      } catch (err) {
+        setErrorUpload(getError(err as ApiError) || 'Something went wrong');
+        setLoadingUpload(false);
+      }
+    }
   }
 
   return (
@@ -97,6 +139,25 @@ export default function CreateProductPage() {
               value={image}
               onChange={(e) => setImage(e.target.value)}
             />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="imageFile">Image File</label>
+            <input
+              type="file"
+              className="form-control"
+              id="imageFile"
+              aria-describedby="imageFile"
+              placeholder="Choose your image file"
+              onChange={uploadHandler}
+            />
+            {loadingUpload && <Spinner />}
+            {errorUpload && (
+              <MessageBox
+                variant='danger'
+                children={errorUpload}
+              />
+            )}
           </div>
 
           <div className="mb-3">
