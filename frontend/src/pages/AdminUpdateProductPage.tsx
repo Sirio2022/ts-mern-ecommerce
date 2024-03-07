@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useGetProductByIdQuery, useUpdateAdminProductMutation } from "../hooks/productHooks";
 import Spinner from "../components/Spinner";
@@ -13,27 +13,36 @@ export default function CreateProductPage() {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const { data: productById, isLoading, error: errorProduct, isPending: loadingProduct, refetch } = useGetProductByIdQuery(id as string);
+    const { data: productById, isLoading, error: errorProduct, refetch } = useGetProductByIdQuery(id as string);
 
     const { mutateAsync: updateProduct, isPending, error } = useUpdateAdminProductMutation();
 
-    const [_id] = useState(productById?._id as string);
-    const [name, setName] = useState(productById?.name as string);
-    const [slug, setSlug] = useState(productById?.slug as string);;
-    const [image, setImage] = useState(productById?.image as string);
-    const [brand, setBrand] = useState(productById?.brand as string);
-    const [category, setCategory] = useState(productById?.category as string)
-    const [description, setDescription] = useState(productById?.description as string)
-    const [price, setPrice] = useState(productById?.price as number || 0)
-    const [countInStock, setCountInStock] = useState(productById?.countInStock as number)
-    const [rating, setRating] = useState(productById?.rating as number)
-    const [numReviews, setNumReviews] = useState(productById?.numReviews as number)
+    const [_id] = useState('');
+    const [name, setName] = useState('');
+    const [slug, setSlug] = useState('');;
+    const [image, setImage] = useState('');
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState('')
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState(0)
+    const [countInStock, setCountInStock] = useState(0)
+    const [rating, setRating] = useState(0)
+    const [numReviews, setNumReviews] = useState(0)
 
-    if (isPending || isLoading || loadingProduct) return <Spinner />
-
-    if (error || errorProduct) {
-        return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
-    }
+    useEffect(() => {
+        if (productById) {
+            setName(productById.name);
+            setSlug(productById.slug);
+            setImage(productById.image);
+            setBrand(productById.brand);
+            setCategory(productById.category);
+            setDescription(productById.description);
+            setPrice(productById.price);
+            setCountInStock(productById.countInStock);
+            setRating(productById.rating);
+            setNumReviews(productById.numReviews);
+        }
+    }, [productById]);
 
     const product = {
         _id: id,
@@ -52,7 +61,7 @@ export default function CreateProductPage() {
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         await updateProduct(product);
-        refetch();
+        await refetch();
         navigate('/adminproducts');
     }
 
@@ -64,7 +73,17 @@ export default function CreateProductPage() {
             >
                 <h1>Edit Product</h1>
 
-                {productById ? (
+                {error && errorProduct && (
+                    <MessageBox
+                        variant='danger'
+                        children={getError(error as ApiError) || getError(errorProduct as ApiError)}
+                    />
+
+                )}
+
+                {isLoading && isPending ? (
+                    <Spinner />
+                ) : (
                     <form
                         onSubmit={submitHandler}
                     >
@@ -206,8 +225,11 @@ export default function CreateProductPage() {
                             Update Product
                         </button>
                     </form>
-                ) : <MessageBox variant='danger'>Product not found</MessageBox>}
+                )}
+
+
             </Col>
         </Row>
+
     )
 }
