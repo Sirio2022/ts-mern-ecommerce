@@ -6,8 +6,6 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
 import { useNavigate, useParams } from "react-router-dom";
-import apiClient from "../apiClient";
-
 
 export default function CreateProductPage() {
 
@@ -72,19 +70,22 @@ export default function CreateProductPage() {
         const file = e.target.files?.item(0);
         if (file) {
             const formData = new FormData();
-            formData.append('image', file);
+            formData.append('file', file);
+            formData.append('upload_preset', 'ts_mern_ecommerce'); // replace 'your_upload_preset' with your actual upload preset
             setLoadingUpload(true);
             try {
-                const { data } = await apiClient.post<string>('api/uploads', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
+                const response = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`, { // replace 'your_cloud_name' with your actual Cloudinary cloud name
+                    method: 'POST',
+                    body: formData,
                 });
-                setImage(data.replace(/\\/g, '/')); // replace backslashes with forward slashes. Windows uses backslashes for file paths, while Unix-based systems use forward slashes.
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                const data = await response.json();
+                setImage(data.secure_url);
                 setLoadingUpload(false);
             } catch (err) {
-                setErrorUpload(getError(err as ApiError) || 'Something went wrong' as string);
+                setErrorUpload(getError(err as ApiError) || 'Something went wrong');
                 setLoadingUpload(false);
             }
         }
