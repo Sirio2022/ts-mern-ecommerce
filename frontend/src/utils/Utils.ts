@@ -19,10 +19,12 @@ export function formatoMoneda(cantidad: number) {
   }).format(cantidad);
 }
 
-export const getError = (error: ApiError) => {
-  return error.response && error.response.data.message
+export const getError = (error: ApiError | null | undefined) => {
+  return error && error.response && error.response.data.message
     ? error.response.data.message
-    : error.message;
+    : error
+    ? error.message
+    : 'An error occurred';
 };
 
 export const convertProductToCartItem = (product: Product) => {

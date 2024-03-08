@@ -28,15 +28,12 @@ export default function AdminUsersEditPage() {
         return <Spinner />
     }
 
-    if (error || updateError) {
-        return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
-    }
-
     useEffect(() => {
-        if (!user) return;
-        setName(user.name);
-        setEmail(user.email);
-        setIsAdmin(user.isAdmin);
+        if (user) {
+            setName(user.name);
+            setEmail(user.email);
+            setIsAdmin(user.isAdmin);
+        }
     }, [user])
 
     const userData = {
@@ -64,7 +61,7 @@ export default function AdminUsersEditPage() {
 
             </Helmet>
 
-            <h1>Edit User</h1>
+            <h1>Edit User {user?._id.substring(10, 25)}</h1>
 
             <Form className="form" noValidate onSubmit={submitHandler}>
 

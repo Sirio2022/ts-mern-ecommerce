@@ -65,20 +65,17 @@ const adminUsers = expressAsyncHandler(async (req: Request, res: Response) => {
 
 const deleteAdminUserById = expressAsyncHandler(
   async (req: Request, res: Response) => {
-    try {
-      const user = await UserModel.findById(req.params.id);
-      if (user) {
-        if (user.isAdmin) {
-          res.status(400).json({ message: 'You cannot delete an admin' });
-          return;
-        }
-        const deleteUser = await user.deleteOne();
-        res.json({ message: 'User deleted successfully', deleteUser });
-      } else {
-        res.status(404).json({ message: 'User not found' });
-      }
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    const user = await UserModel.findById(req.params.id);
+
+    if (user?.isAdmin) {
+      res.status(403).json({ message: 'Cannot delete admin user' });
+      return;
+    }
+    if (user) {
+      await user.deleteOne();
+      res.json({ message: 'User removed successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
     }
   }
 ) as any;

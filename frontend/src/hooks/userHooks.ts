@@ -3,6 +3,8 @@ import apiClient from '../apiClient';
 import { UserInfo } from '../types/UserInfo';
 import { User } from '../types/User';
 import { toast } from 'react-toastify';
+import { getError } from '../utils/Utils';
+import { ApiError } from '../types/ApiError';
 
 export const useSignInMutation = () =>
   useMutation({
@@ -69,9 +71,14 @@ export const useDeleteAdminUserMutation = () => {
   return useMutation({
     mutationFn: async (id: string) =>
       (await apiClient.delete(`api/admin/users/${id}`)).data,
-    onSettled: () => {
-      toast.success('User deleted successfully');
-      queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
+    onError: (error) => {
+      toast.error(getError(error as ApiError));
+    },
+    onSuccess: (data) => {
+      if (data.message === 'User removed successfully') {
+        toast.success('User deleted successfully');
+        queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
+      }
     },
   });
 };

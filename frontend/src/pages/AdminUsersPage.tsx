@@ -12,13 +12,15 @@ export default function AdminUsersPage() {
 
     const { data: users, isLoading, error } = useAdminUsersQuery();
 
-    const { mutateAsync: deleteAdminUser, isPending, error: deleteUserError } = useDeleteAdminUserMutation();
+    const { mutateAsync: deleteAdminUser, isPending, error: deleteError } = useDeleteAdminUserMutation();
+
+
 
     if (isLoading || isPending) {
         return <Spinner />
     }
 
-    if (error || deleteUserError) {
+    if (error || deleteError) {
         return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
     }
 

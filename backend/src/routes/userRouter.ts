@@ -16,8 +16,8 @@ router.put('/', userUpdate);
 router.get('/', isAuth, adminUsers);
 router
   .route('/:id')
-  .delete(deleteAdminUserById)
-  .get(getAdminUserById)
-  .put(updateUserById);
+  .delete(isAuth, deleteAdminUserById)
+  .get(isAuth, getAdminUserById)
+  .put(isAuth, updateUserById);
 
 export default router;
