@@ -27,7 +27,7 @@ export const getError = (error: ApiError) => {
 
 export const convertProductToCartItem = (product: Product) => {
   const cartItem: CartItem = {
-    _id: product._id,
+    _id: product._id as string,
     name: product.name,
     slug: product.slug,
     image: product.image,
