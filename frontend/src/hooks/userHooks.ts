@@ -1,6 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../apiClient';
 import { UserInfo } from '../types/UserInfo';
+import { User } from '../types/User';
+import { toast } from 'react-toastify';
 
 export const useSignInMutation = () =>
   useMutation({
@@ -54,3 +56,41 @@ export const useUpdateProfileMutation = () =>
         })
       ).data,
   });
+
+export const useAdminUsersQuery = () =>
+  useQuery({
+    queryKey: ['adminUsers'],
+    queryFn: async () => (await apiClient.get<User[]>('api/admin/users')).data,
+  });
+
+export const useDeleteAdminUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) =>
+      (await apiClient.delete(`api/admin/users/${id}`)).data,
+    onSettled: () => {
+      toast.success('User deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
+    },
+  });
+};
+
+export const useGetAdminUserByIdQuery = (id: string) =>
+  useQuery({
+    queryKey: ['adminUser', id],
+    queryFn: async () =>
+      (await apiClient.get<User>(`api/admin/users/${id}`)).data,
+  });
+
+export const useUpdateAdminUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (user: User) =>
+      (await apiClient.put<User>(`api/admin/users/${user._id}`, user)).data,
+    onSettled: () => {
+      toast.success('User updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
+    },
+  });
+};

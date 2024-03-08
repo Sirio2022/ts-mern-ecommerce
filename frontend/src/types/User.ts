@@ -3,5 +3,5 @@ export type User = {
   name: string;
   email: string;
   isAdmin: boolean;
-  token: string;
+  token?: string;
 };

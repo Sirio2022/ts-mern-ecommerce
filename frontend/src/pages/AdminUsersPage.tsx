@@ -1,28 +1,28 @@
 import { Col, Row } from "react-bootstrap";
-import { useDeleteAdminProductMutation, useGetAdminProductsQuery } from "../hooks/productHooks";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useAdminUsersQuery, useDeleteAdminUserMutation } from "../hooks/userHooks";
 import Spinner from "../components/Spinner";
 import MessageBox from "../components/MessageBox";
-import { formatoMoneda, getError } from "../utils/Utils";
+import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
+import { User } from "../types/User";
 
 
-export default function AdminProductsPage() {
-    const { data: products, isLoading, error } = useGetAdminProductsQuery();
+export default function AdminUsersPage() {
 
-    const { pathname } = useLocation();
+    const { data: users, isLoading, error } = useAdminUsersQuery();
 
+    const { mutateAsync: deleteAdminUser, isPending, error: deleteUserError } = useDeleteAdminUserMutation();
 
-    const { mutateAsync: deleteProduct, isPending: deleteLoading, error: deleteError } = useDeleteAdminProductMutation();
+    if (isLoading || isPending) {
+        return <Spinner />
+    }
 
-    if (isLoading || deleteLoading) return <Spinner />
-
-    if (error || deleteError) {
+    if (error || deleteUserError) {
         return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
     }
 
-    if (products?.length === 0) return <MessageBox>No products found</MessageBox>
-
+    const { pathname } = window.location;
 
     return (
         <Row>
@@ -60,21 +60,10 @@ export default function AdminProductsPage() {
                     }
                 >Users</Link>
             </Col>
-
             <Col md={10}>
                 <div>
-                    <div className="d-flex justify-content-between align-content-center mb-4">
-                        <h1>Products</h1>
-                        <button
-                            disabled={deleteLoading}
-                            className='btn btn-info'
-                        >
-                            <Link
-                                className="text-white text-decoration-none text-uppercase fon"
-
-                                to="/admincreateproduct">Create Product</Link>
-                        </button>
-
+                    <div className="my-2">
+                        <h1>Users</h1>
                     </div>
 
                     <div className="table-overflow">
@@ -82,44 +71,40 @@ export default function AdminProductsPage() {
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Category</th>
-                                    <th>Count in stock</th>
-                                    <th>Rating</th>
-                                    <th>Actions</th>
+                                    <th>NAME</th>
+                                    <th>EMAIL</th>
+                                    <th>IS ADMIN</th>
+                                    <th>ACTIONS</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                {products?.map(product => (
-                                    <tr key={product._id}>
-                                        <td>{product._id && `...${product._id.substring(20, 24)}`}</td>
-                                        <td>{product.name}</td>
-                                        <td>{formatoMoneda(product.price)}</td>
-                                        <td>{product.category}</td>
-                                        <td>{product.countInStock}</td>
-                                        <td>{product.rating}</td>
+                                {users?.map((user: User) => (
+                                    <tr key={user._id}>
+                                        <td>..{user._id.substring(10, 24)}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                                         <td>
                                             <Link
-                                                to={`/adminproduct/${product._id}/edit`}
-                                                className="btn btn-warning"
+                                                to={`/adminuser/${user._id}/edit`}
+                                                className="btn btn-primary"
                                             >
                                                 Edit
                                             </Link>
                                             &nbsp;
                                             <button
-                                                onClick={() => deleteProduct(product._id as string)}
+                                                onClick={() => deleteAdminUser(user._id)}
                                                 className="btn btn-danger"
                                             >
                                                 Delete
                                             </button>
                                         </td>
-
-
                                     </tr>
+
                                 ))}
                             </tbody>
+
                         </table>
 
                     </div>
