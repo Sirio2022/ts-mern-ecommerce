@@ -11,7 +11,6 @@ import { Helmet } from "react-helmet-async";
 
 export default function AdminUsersEditPage() {
 
-    const navigate = useNavigate();
 
     const { id } = useParams() as { id: string };
 
@@ -19,14 +18,11 @@ export default function AdminUsersEditPage() {
     const [email, setEmail] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
 
+    const navigate = useNavigate();
 
     const { data: user, isLoading, error } = useGetAdminUserByIdQuery(id as string);
 
     const { mutateAsync: updateUser, isPending, error: updateError } = useUpdateAdminUserMutation();
-
-    if (isLoading || isPending) {
-        return <Spinner />
-    }
 
     useEffect(() => {
         if (user) {
@@ -35,6 +31,15 @@ export default function AdminUsersEditPage() {
             setIsAdmin(user.isAdmin);
         }
     }, [user])
+
+    if (isLoading || isPending) {
+        return <Spinner />
+    }
+
+    if (error || updateError) {
+        return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
+
+    }
 
     const userData = {
         _id: id,
@@ -62,6 +67,7 @@ export default function AdminUsersEditPage() {
             </Helmet>
 
             <h1>Edit User {user?._id.substring(10, 25)}</h1>
+
 
             <Form className="form" noValidate onSubmit={submitHandler}>
 
