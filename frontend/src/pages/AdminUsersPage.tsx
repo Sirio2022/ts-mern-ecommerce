@@ -2,32 +2,39 @@ import { Col, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAdminUsersQuery, useDeleteAdminUserMutation } from "../hooks/userHooks";
 import Spinner from "../components/Spinner";
+import { useLocation } from "react-router-dom";
+import { User } from "../types/User";
+import Swal from "sweetalert2";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/Utils";
 import { ApiError } from "../types/ApiError";
-import { User } from "../types/User";
+
 
 
 export default function AdminUsersPage() {
+
+    const { pathname } = useLocation();
 
     const navigate = useNavigate();
 
     const { data: users, isLoading, error } = useAdminUsersQuery();
 
-    const { mutateAsync: deleteAdminUser, isPending, error: deleteError } = useDeleteAdminUserMutation();
+    const { mutateAsync: deleteAdminUser, isPending } = useDeleteAdminUserMutation();
 
     if (isLoading || isPending) {
         return <Spinner />
     }
 
-    if (error || deleteError) {
-        return <MessageBox variant='danger'>{getError(error as ApiError)}</MessageBox>
+    if (error) {
+        return <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
     }
 
-    const { pathname } = window.location;
-
-    const deleteHandler = async (id: string) => {
-        await deleteAdminUser(id as string);
+    const deleteHandler = async (id: string, isAdmin: boolean) => {
+        if (isAdmin) {
+            Swal.fire('Error', 'Cannot delete admin user', 'error');
+            return;
+        }
+        await deleteAdminUser(id);
         navigate('/adminusers');
     }
 
@@ -101,7 +108,7 @@ export default function AdminUsersPage() {
                                             </Link>
                                             &nbsp;
                                             <button
-                                                onClick={() => deleteHandler(user._id)}
+                                                onClick={() => deleteHandler(user._id, user.isAdmin)}
                                                 className="btn btn-danger"
                                             >
                                                 Delete
