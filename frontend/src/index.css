@@ -230,3 +230,9 @@ button.side-navbar-user:hover {
 .table-overflow {
   overflow-x: auto;
 }
+
+@media (min-width: 768px) {
+  .doughnut-chart {
+    height: 250px !important;
+  }
+}
