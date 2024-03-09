@@ -46,13 +46,15 @@ function App() {
           expand='lg'
         >
 
-          <div className='d-flex justify-content-between align-items-center'>
+          <div className='d-flex flex-column flex-sm-row justify-content-sm-center justify-content-lg-between align-items-center mb-3'>
 
             <LinkContainer to='/' className='header-link'>
               <Navbar.Brand>Music Store</Navbar.Brand>
             </LinkContainer>
 
             <SearchBox />
+
+            <Navbar.Toggle aria-controls="basic-navbar-nav" className='my-3 mb-0' />
 
             <Navbar.Collapse id='basic-navbar-nav'>
               <Nav
@@ -161,10 +163,12 @@ function App() {
 
               </Nav>
             </Navbar.Collapse>
+
+
           </div>
 
           <div className="sub-header">
-            <div className="d-flex">
+            <div className="d-flex flex-column flex-md-row">
               <Link
                 to='/search'
                 className='header-link nav-link p-1'
