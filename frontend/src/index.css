@@ -231,6 +231,10 @@ button.side-navbar-user:hover {
   overflow-x: auto;
 }
 
+.doughnut-chart {
+  height: 150px !important;
+}
+
 @media (min-width: 768px) {
   .doughnut-chart {
     height: 250px !important;
