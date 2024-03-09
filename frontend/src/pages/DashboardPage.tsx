@@ -245,7 +245,7 @@ export default function DashboardPage() {
               <h2 className='text-xl'>
                 Products Categories
               </h2>
-              <Doughnut data={productsData} className='doughnut-chart d-flex justify-content-center h-25 w-25' />
+              <Doughnut data={productsData} className='doughnut-chart d-flex justify-content-center h-25 w-auto' />
             </div>
           </div>
         </div>
