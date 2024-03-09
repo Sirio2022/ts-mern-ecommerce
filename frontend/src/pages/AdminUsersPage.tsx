@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAdminUsersQuery, useDeleteAdminUserMutation } from "../hooks/userHooks";
 import Spinner from "../components/Spinner";
 import MessageBox from "../components/MessageBox";
@@ -10,11 +10,11 @@ import { User } from "../types/User";
 
 export default function AdminUsersPage() {
 
+    const navigate = useNavigate();
+
     const { data: users, isLoading, error } = useAdminUsersQuery();
 
     const { mutateAsync: deleteAdminUser, isPending, error: deleteError } = useDeleteAdminUserMutation();
-
-
 
     if (isLoading || isPending) {
         return <Spinner />
@@ -25,6 +25,11 @@ export default function AdminUsersPage() {
     }
 
     const { pathname } = window.location;
+
+    const deleteHandler = async (id: string) => {
+        await deleteAdminUser(id as string);
+        navigate('/adminusers');
+    }
 
     return (
         <Row>
@@ -96,7 +101,7 @@ export default function AdminUsersPage() {
                                             </Link>
                                             &nbsp;
                                             <button
-                                                onClick={() => deleteAdminUser(user._id)}
+                                                onClick={() => deleteHandler(user._id)}
                                                 className="btn btn-danger"
                                             >
                                                 Delete

@@ -50,7 +50,7 @@ export default function AdminUsersEditPage() {
 
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        updateUser(userData);
+        await updateUser(userData);
         navigate('/adminusers');
     }
 

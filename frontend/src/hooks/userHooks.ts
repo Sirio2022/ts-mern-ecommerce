@@ -3,8 +3,6 @@ import apiClient from '../apiClient';
 import { UserInfo } from '../types/UserInfo';
 import { User } from '../types/User';
 import { toast } from 'react-toastify';
-import { getError } from '../utils/Utils';
-import { ApiError } from '../types/ApiError';
 
 export const useSignInMutation = () =>
   useMutation({
@@ -65,23 +63,11 @@ export const useAdminUsersQuery = () =>
     queryFn: async () => (await apiClient.get<User[]>('api/admin/users')).data,
   });
 
-export const useDeleteAdminUserMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useDeleteAdminUserMutation = () =>
+  useMutation({
     mutationFn: async (id: string) =>
-      (await apiClient.delete(`api/admin/users/${id}`)).data,
-    onError: (error) => {
-      toast.error(getError(error as ApiError));
-    },
-    onSuccess: (data) => {
-      if (data.message === 'User removed successfully') {
-        toast.success('User deleted successfully');
-        queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
-      }
-    },
+      (await apiClient.delete(`api/admin/users/deleteuser/${id}`)).data,
   });
-};
 
 export const useGetAdminUserByIdQuery = (id: string) =>
   useQuery({
@@ -94,7 +80,12 @@ export const useUpdateAdminUserMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (user: User) =>
-      (await apiClient.put<User>(`api/admin/users/${user._id}`, user)).data,
+      (
+        await apiClient.put<User>(
+          `api/admin/users/updateuser/${user._id}`,
+          user
+        )
+      ).data,
     onSettled: () => {
       toast.success('User updated successfully');
       queryClient.invalidateQueries({ queryKey: ['adminUsers'] });

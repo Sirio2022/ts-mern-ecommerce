@@ -11,8 +11,7 @@ import mongoose from 'mongoose';
 import { isAuth } from './utils';
 import path from 'path';
 import { Request, Response } from 'express';
-import cloudinary from 'cloudinary';
-import crypto from 'crypto';
+
 
 const app = express();
 dotenv.config();

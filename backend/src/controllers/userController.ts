@@ -67,15 +67,14 @@ const deleteAdminUserById = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const user = await UserModel.findById(req.params.id);
 
-    if (user?.isAdmin) {
-      res.status(403).json({ message: 'Cannot delete admin user' });
-      return;
-    }
     if (user) {
+      if (user.isAdmin) {
+        res.status(400).json({ message: 'Cannot delete an admin user' });
+        return;
+      }
+
       await user.deleteOne();
       res.json({ message: 'User removed successfully' });
-    } else {
-      res.status(404).json({ message: 'User not found' });
     }
   }
 ) as any;
