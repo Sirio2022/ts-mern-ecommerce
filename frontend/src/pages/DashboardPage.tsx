@@ -195,7 +195,7 @@ export default function DashboardPage() {
                 <div className="card-body">
                   <h4 className='text-primary'>Total Users</h4>
                   <h3 className='dashboard-data'>{summary.usersCount}</h3>
-                  <Link to="/userlist">View Details</Link>
+                  <Link to="/adminusers">View Details</Link>
                 </div>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function DashboardPage() {
                 <div className="card-body">
                   <h4 className='text-primary'>Total Products</h4>
                   <h3 className='dashboard-data'>{summary.productsCount}</h3>
-                  <Link to="/productlist">View Details</Link>
+                  <Link to="/adminproducts">View Details</Link>
                 </div>
               </div>
             </div>
